@@ -1,0 +1,3 @@
+interface ViewI {
+  root: HTMLElement;
+}
