@@ -1,11 +1,11 @@
 interface FilterProps {
   radio?: object;
   setBlockAction?: function;
-  code?: string;
 }
 
 interface FilterState {
-  count?: number;
+  ruleIndex: number;
+  rules: object[];
 }
 
 interface FilterI {

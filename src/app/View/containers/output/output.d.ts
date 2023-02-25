@@ -1,5 +1,5 @@
 interface OutputProps {
-  code?: any;
+  filter?: any;
 }
 
 interface OutputState {

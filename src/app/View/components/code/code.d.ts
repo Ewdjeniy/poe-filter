@@ -1,10 +1,8 @@
 interface CodeProps {
-  value?: string;
+  rules?: string;
 }
 
-interface CodeState {
-  count?: number;
-}
+interface CodeState {}
 
 interface CodeI {
   render(): JSX.Element;

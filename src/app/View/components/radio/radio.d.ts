@@ -2,12 +2,11 @@ interface RadioProps {
   label: string;
   name: string;
   value: string;
-  setOperator?: any;
+  checked: any;
+  setAction: any;
 }
 
-interface RadioState {
-  count?: number;
-}
+interface RadioState {}
 
 interface RadioI {
   render(): JSX.Element;

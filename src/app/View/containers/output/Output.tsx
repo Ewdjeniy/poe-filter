@@ -10,7 +10,7 @@ class Output
   render(): JSX.Element {
     return (
       <section className="output">
-        <Code value={this.props.code.operator} />
+        <Code rules={this.props.filter.rules} />
       </section>
     );
   }
@@ -18,13 +18,13 @@ class Output
 
 const mapStateToProps = (store) => {
   return {
-    code: store.code,
+    filter: store.filter,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    //setOperatorAction: (operator) => dispatch(setOperator(operator)),
+    
   };
 };
 
