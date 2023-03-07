@@ -1,5 +1,5 @@
 interface RuleProps {
-  block?: any;
+  content?: any;
   index?: any;
   setAction?: any;
 }

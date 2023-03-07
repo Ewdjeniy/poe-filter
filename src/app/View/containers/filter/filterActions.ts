@@ -1,8 +1,8 @@
-export function setBlock(block: string): object {
+export function setBlock(property: any): object {
   return (dispatch) => {
     dispatch({
       type: 'SET_BLOCK',
-      block: block,
+      value: property.value
     });
   };
 }

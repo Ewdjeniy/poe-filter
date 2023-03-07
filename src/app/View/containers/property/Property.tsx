@@ -4,12 +4,106 @@ import store from '../../store/configureStore';
 import { setProperty, setOperator, setTurner } from '../filter/filterActions';
 import Checkbox from '../../components/checkbox/Checkbox';
 import InptNumber from '../../components/inptNumber/InptNumber';
-import Operator from '../../components/operator/Operator';
+import Select from '../../components/select/Select';
+import Radio from '../../components/radio/Radio';
 
 class Property
   extends React.Component<PropertyProps, PropertyState>
   implements PropertyI
 {
+  
+  render(): JSX.Element {
+    return (
+      <article className="property">
+        <Checkbox
+          checked={this.checkIfRuleOn()}
+          property={this.props.property}
+          defaultVal={this.props.defaultVal}
+          setAction={this.props.setTurnerAction}
+        />
+        {this.props.lang[this.props.property]}
+        {this[`to${this.props.instance}`]()}
+      </article>
+    );
+  }
+  
+  toSelect(): any {
+    let operator: any = '';
+    if (this.returnRule().operator) {
+      operator = 
+        <Select
+          value={this.returnRule().operator}
+          options={this.translate(this.props.content.operators)}
+          property={this.props.property}
+          setAction={this.props.setOperatorAction}
+        />;
+    }
+    return (
+      <>
+        {operator}
+        <Select
+          value={this.returnRule().value}
+          options={this.translate(this.props.content[this.props.options])}
+          property={this.props.property}
+          setAction={this.props.setPropertyAction}
+        />
+      </>
+    );
+  }
+  
+  toBoolean(): any {
+    return (
+      <>
+        <Radio
+          label={this.translate(["True"])["True"]}
+          name="this.props.property"
+          instance="radio"
+          value="True"
+          checked={this.returnRule().value}
+          property={this.props.property}
+          setAction={this.props.setPropertyAction}
+        />
+        <Radio
+          label={this.translate(["False"])["False"]}
+          name="this.props.property"
+          instance="radio"
+          value="False"
+          checked={this.returnRule().value}
+          property={this.props.property}
+          setAction={this.props.setPropertyAction}
+        />
+      </>
+    );
+  }
+  
+  toNumeric(): any {
+    return (
+      <>
+        <Select
+          value={this.returnRule().operator}
+          options={this.translate(this.props.content.operators)}
+          property={this.props.property}
+          setAction={this.props.setOperatorAction}
+        />
+        <InptNumber
+          value={this.returnRule().value}
+          property={this.props.property}
+          setAction={this.props.setPropertyAction} 
+          min={this.props.min}
+          max={this.props.max}
+        />
+      </>
+    );
+  }
+  
+  translate(words: any[]): any {
+    const result: any = {};
+    words.forEach((word) => {
+      const translation = this.props.lang[word] ? this.props.lang[word] : word;
+      result[word] = translation;
+    });
+    return result;
+  }
   
   checkIfRuleOn(): any {
     const rules = this.props.filter.rules[this.props.filter.ruleIndex][
@@ -22,43 +116,20 @@ class Property
     return false;
   }
   
-  render(): JSX.Element {
-    const { operator, value } =
-      this.props.filter.rules[this.props.filter.ruleIndex][
-        Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]
-      ][this.props.property] ? this.props.filter.rules[this.props.filter.ruleIndex][
-        Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]
-      ][this.props.property] : {operator: '>', value: 4};
-
-    return (
-      <article className="property">
-        <Checkbox
-          checked={this.checkIfRuleOn()}
-          property={this.props.property}
-          defaultVal={{operator: '>', value: 4}}
-          setAction={this.props.setTurnerAction}
-        />
-        {this.props.label}
-        <Operator
-          value={operator}
-          property={this.props.property}
-          setAction={this.props.setOperatorAction}
-        />
-        <InptNumber
-          value={value}
-          property={this.props.property}
-          setAction={this.props.setPropertyAction} 
-          min={this.props.min}
-          max={this.props.max}
-        />
-      </article>
-    );
+  returnRule(): any {
+    const rule = this.props.filter.rules[this.props.filter.ruleIndex][Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]][this.props.property];
+    if (rule) {
+      return rule;
+    }
+    return this.props.defaultVal;
   }
 }
 
 const mapStateToProps = (store) => {
   return {
     filter: store.filter,
+    content: store.filter.contents,
+    lang : store.language.lang
   };
 };
 

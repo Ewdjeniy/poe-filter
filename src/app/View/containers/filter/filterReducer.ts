@@ -1,6 +1,11 @@
+import content from './contents.js';
+
+const contents = JSON.parse(content);
+
 export const initialState: any = {
   ruleIndex: 0,
-  rules: [{ Show: { LinkedSockets: { operator: '>', value: 5 }, AreaLevel: { operator: '>', value: 86 }, } }, { Hide: { LinkedSockets: { operator: '<', value: 3 }, AreaLevel: { operator: '<', value: 80 }, } }],
+  contents: contents,
+  rules: [{ Show: { LinkedSockets: { operator: '>', value: 5 }, Rarity: { operator: '>', value: "Magic" }, } }, { Hide: { LinkedSockets: { operator: '<', value: 3 }, AreaLevel: { operator: '<', value: 80 }, } }],
 };
 
 function filterReducer(state = initialState, action): FilterState {
@@ -19,7 +24,7 @@ function filterReducer(state = initialState, action): FilterState {
 
       rulesCopy[state.ruleIndex] = setKey(
         rulesCopy[state.ruleIndex],
-        action.block,
+        action.value,
       );
 
       return {
@@ -30,6 +35,7 @@ function filterReducer(state = initialState, action): FilterState {
     case 'SET_PROPERTY':
       rulesCopy = state.rules.slice(0);
       key = Object.keys(rulesCopy[state.ruleIndex])[0];
+      console.log(action);
       rulesCopy[state.ruleIndex][key][action.key].value =
         action.value;
       return {
@@ -51,6 +57,7 @@ function filterReducer(state = initialState, action): FilterState {
       key = Object.keys(rulesCopy[state.ruleIndex])[0];
       if (action.turner) {
         rulesCopy[state.ruleIndex][key][action.key] = action.operator ? { operator: action.operator, value: action.value } : { value: action.value };
+        console.log(rulesCopy[state.ruleIndex][key][action.key]);
       } else {
         delete rulesCopy[state.ruleIndex][key][action.key];
       }

@@ -1,6 +1,8 @@
 interface BlockProps {
   filter?: any;
+  blocks?: any;
   setBlockAction: any;
+  lang?: any;
 }
 
 interface BlockState {}

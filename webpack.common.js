@@ -35,7 +35,7 @@ const htmlPlugins = pages.map(
 
 module.exports = {
   entry: {
-    slider: './src/entry.js',
+    poeFilter: './src/entry.js',
   },
   output: {
     filename: '[name].bundle.js',

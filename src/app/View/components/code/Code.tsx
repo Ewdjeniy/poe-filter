@@ -13,6 +13,13 @@ class Code extends React.Component<CodeProps, CodeState> implements CodeI {
                 {`${ruleName} ${rule[block][ruleName].operator} ${rule[block][ruleName].value}`}
               </div>
             );
+          } else {
+            return (
+              <div key={`div_${i}`}>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                {`${ruleName} ${rule[block][ruleName].value}`}
+              </div>
+            );
           }
         },
       );

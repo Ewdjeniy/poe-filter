@@ -6,32 +6,25 @@ import { setBlock } from '../filter/filterActions';
 
 class Block extends React.Component<BlockProps, BlockState> implements BlockI {
   render(): JSX.Element {
+    
     const value = Object.keys(
       this.props.filter.rules[this.props.filter.ruleIndex],
     )[0];
+    
+    const blockList: any = this.props.blocks.map((block: any, i: any) => (
+      <Radio
+        key={`block_${i}`}
+        instance="Radio"
+        label={this.props.lang[block]}
+        name='Block'
+        value={block}
+        checked={value}
+        setAction={this.props.setBlockAction}
+      />
+    ));
     return (
       <article className="block">
-        <Radio
-          label="Show"
-          name="block"
-          value="Show"
-          checked={value}
-          setAction={this.props.setBlockAction}
-        />
-        <Radio
-          label="Hide"
-          name="block"
-          value="Hide"
-          checked={value}
-          setAction={this.props.setBlockAction}
-        />
-        <Radio
-          label="Minimal"
-          name="block"
-          value="Minimal"
-          checked={value}
-          setAction={this.props.setBlockAction}
-        />
+        {blockList}
       </article>
     );
   }
@@ -40,6 +33,8 @@ class Block extends React.Component<BlockProps, BlockState> implements BlockI {
 const mapStateToProps = (store) => {
   return {
     filter: store.filter,
+    blocks: store.filter.contents.blocks,
+    lang : store.language.lang
   };
 };
 

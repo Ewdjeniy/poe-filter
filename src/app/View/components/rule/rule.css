@@ -1,3 +1,4 @@
-.rule__td {
-  border: 1px solid;
+.rule {
+  cursor: pointer;
+  user-select: none;
 }

@@ -1,0 +1,20 @@
+.filter {
+  width: 95em;
+  margin: 0 auto;
+  max-width: 100%;
+  &__controls {
+    display: flex;
+    border-top: 1px solid #5a3806;
+    background: #000000;
+  }
+}
+
+.control-panel {
+  color: #e4ddc9;
+  width: 50%;
+  padding-right: 2em;
+}
+
+.filter-menu {
+  color: #e4ddc9;
+}

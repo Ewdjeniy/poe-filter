@@ -1,5 +1,6 @@
 interface FilterProps {
   radio?: object;
+  rules?: any;
   setBlockAction?: function;
 }
 

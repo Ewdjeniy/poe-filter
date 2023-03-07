@@ -1,0 +1,8 @@
+.radio_hidden {
+  display: none;
+}
+
+.radio__img {
+  margin-right: 0.3em;
+  cursor: pointer;
+}

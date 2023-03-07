@@ -7,6 +7,13 @@ interface PropertyProps {
   min?: any;
   max?: any;
   label?: any;
+  content?: any;
+  instance?: any;
+  True?: any;
+  False?: any;
+  defaultVal?: any;
+  options?: any;
+  lang?: any;
 }
 
 interface PropertyState {}

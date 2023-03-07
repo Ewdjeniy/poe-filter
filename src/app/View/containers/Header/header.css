@@ -1,0 +1,8 @@
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-header__img {
+  width: 16em;
+}

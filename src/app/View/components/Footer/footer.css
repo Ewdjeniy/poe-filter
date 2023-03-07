@@ -1,0 +1,18 @@
+.filter-footer {
+  font-size: 0.9em;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #444444;
+  padding-bottom: 0.5em;
+  margin-top: auto;
+  .filter-footer__link {
+    color: #444444;
+    text-decoration: none;
+  }
+  
+  .filter-footer__link:hover {
+    text-decoration: underline;
+  }
+}

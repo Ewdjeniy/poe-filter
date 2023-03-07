@@ -3,6 +3,8 @@ import { Provider } from 'react-redux';
 import store from './store/configureStore';
 import { createRoot } from 'react-dom/client';
 import Filter from './containers/filter/Filter';
+import Header from './containers/Header';
+import Footer from './components/Footer';
 
 class View implements ViewI {
   root: HTMLElement;
@@ -11,7 +13,11 @@ class View implements ViewI {
     this.root = el;
     createRoot(el).render(
       <Provider store={store}>
-        <Filter />
+        <div className="container">
+          <Header />
+          <Filter />
+          <Footer />
+        </div>
       </Provider>,
     );
   }

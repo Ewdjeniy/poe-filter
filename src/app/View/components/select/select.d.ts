@@ -1,8 +1,10 @@
 interface SelectProps {
-  options?: object[];
-  setAction: any;
+  options?: any;
+  setAction?: any;
+  name?: any;
   value?: any;
   property?: any;
+  language?: any;
 }
 
 interface SelectState {}
