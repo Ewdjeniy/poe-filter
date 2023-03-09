@@ -1,8 +1,26 @@
+export function deleteBlock(index: number): object {
+  return (dispatch) => {
+    dispatch({
+      type: 'DELETE_BLOCK',
+      index: index,
+    });
+  };
+}
+
+export function addBlock(block: any): object {
+  return (dispatch) => {
+    dispatch({
+      type: 'ADD_BLOCK',
+      block: block,
+    });
+  };
+}
+
 export function setBlock(property: any): object {
   return (dispatch) => {
     dispatch({
       type: 'SET_BLOCK',
-      value: property.value
+      value: property.value,
     });
   };
 }
@@ -12,7 +30,7 @@ export function setProperty(property: any): object {
     dispatch({
       type: 'SET_PROPERTY',
       key: property.key,
-      value: property.value
+      value: property.value,
     });
   };
 }
@@ -34,7 +52,7 @@ export function setTurner(property: any): object {
       turner: property.turner,
       key: property.key,
       operator: property.operator,
-      value: property.value
+      value: property.value,
     });
   };
 }

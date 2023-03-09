@@ -11,7 +11,13 @@ class Header
     return (
       <header className="filter-header">
         <div></div>
-        <a href="https://ru.pathofexile.com/" className="filter-header__logo"><img className="filter-header__img" src={require('./images/logo.png')} alt="logo" /></a>
+        <a href="https://ru.pathofexile.com/" className="filter-header__logo">
+          <img
+            className="filter-header__img"
+            src={require('./images/logo.png')}
+            alt="logo"
+          />
+        </a>
         <Language />
       </header>
     );
@@ -19,15 +25,11 @@ class Header
 }
 
 const mapStateToProps = (store) => {
-  return {
-
-  };
+  return {};
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    
-  };
+  return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

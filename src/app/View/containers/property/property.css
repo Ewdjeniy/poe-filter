@@ -1,3 +1,9 @@
 .property {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.2em;
+  align-items: center;
+  height: 1.8em;
+  border-left: 1px solid #634928;
+  margin-top: 0.2em;
 }

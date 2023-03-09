@@ -2,4 +2,8 @@
   color: #e4ddc9;
   width: 50%;
   padding: 0.5em 0 0.5em 0;
+  &__div {
+    display: grid;
+    grid-template-columns: 1fr 2em;
+  }
 }

@@ -8,7 +8,6 @@ export const initialState: any = {
 };
 
 function languageReducer(state = initialState, action): any {
-
   switch (action.type) {
     case 'SET_LANGUAGE':
       return {

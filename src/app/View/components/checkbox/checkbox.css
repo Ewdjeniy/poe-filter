@@ -1,0 +1,17 @@
+.checkbox {
+  display: flex;
+  align-items: center;
+  &__label {
+    cursor: pointer;
+    user-select: none;
+  }
+  &__input {
+    display: none;
+  }
+  &__checker {
+    display: none;
+    &_checked {
+      display: block;
+    }
+  }
+}

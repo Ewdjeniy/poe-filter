@@ -10,10 +10,13 @@ class Filter
   extends React.Component<FilterProps, FilterState>
   implements FilterI
 {
-  
   render(): JSX.Element {
-    const propertiesBoxes: any = Object.keys(this.props.rules).map((propsLabel, i) => <PropertiesBox key={`propertiesBox_${i}`} label={propsLabel} />);
-    
+    const propertiesBoxes: any = Object.keys(this.props.rules).map(
+      (propsLabel, i) => (
+        <PropertiesBox key={`propertiesBox_${i}`} label={propsLabel} />
+      ),
+    );
+
     return (
       <section className="filter">
         <menu className="filter__menu">menu</menu>
@@ -21,8 +24,8 @@ class Filter
           <form className="control-panel">
             {propertiesBoxes}
           </form>
-          <Rules />                                                          
-        </article>                                                          
+          <Rules />
+        </article>
         <Output />
       </section>
     );
@@ -36,9 +39,7 @@ const mapStateToProps = (store) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-
-  };
+  return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

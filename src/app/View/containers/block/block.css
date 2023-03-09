@@ -1,3 +1,4 @@
 .block {
-  display: flex;
+  display: grid;
+  grid-template-columns: 7em 7em 7em;
 }

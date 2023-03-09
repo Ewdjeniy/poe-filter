@@ -22,17 +22,16 @@
     height: 0.47em;
     background: #ffffff;
   }
-  
+
   &__span {
     display: block;
     padding-bottom: 0.4em;
     border-bottom: 1px solid #465260;
   }
-  
 }
 
 .properties-box__checkbox_checked {
-  .properties-box__checker{
+  .properties-box__checker {
     display: block;
   }
 }

@@ -4,14 +4,13 @@ import store from '../../store/configureStore';
 import { setProperty, setOperator, setTurner } from '../filter/filterActions';
 import Checkbox from '../../components/checkbox/Checkbox';
 import InptNumber from '../../components/inptNumber/InptNumber';
-import Select from '../../components/select/Select';
+import Select from '../../components/Select';
 import Radio from '../../components/radio/Radio';
 
 class Property
   extends React.Component<PropertyProps, PropertyState>
   implements PropertyI
 {
-  
   render(): JSX.Element {
     return (
       <article className="property">
@@ -20,23 +19,24 @@ class Property
           property={this.props.property}
           defaultVal={this.props.defaultVal}
           setAction={this.props.setTurnerAction}
+          label={this.props.lang[this.props.property]}
         />
-        {this.props.lang[this.props.property]}
         {this[`to${this.props.instance}`]()}
       </article>
     );
   }
-  
+
   toSelect(): any {
     let operator: any = '';
     if (this.returnRule().operator) {
-      operator = 
+      operator = (
         <Select
           value={this.returnRule().operator}
           options={this.translate(this.props.content.operators)}
           property={this.props.property}
           setAction={this.props.setOperatorAction}
-        />;
+        />
+      );
     }
     return (
       <>
@@ -50,12 +50,12 @@ class Property
       </>
     );
   }
-  
+
   toBoolean(): any {
     return (
       <>
         <Radio
-          label={this.translate(["True"])["True"]}
+          label={this.translate(['True'])['True']}
           name="this.props.property"
           instance="radio"
           value="True"
@@ -64,7 +64,7 @@ class Property
           setAction={this.props.setPropertyAction}
         />
         <Radio
-          label={this.translate(["False"])["False"]}
+          label={this.translate(['False'])['False']}
           name="this.props.property"
           instance="radio"
           value="False"
@@ -75,12 +75,12 @@ class Property
       </>
     );
   }
-  
+
   toNumeric(): any {
     return (
       <>
         <Select
-          value={this.returnRule().operator}
+          placeholder={this.translate([this.returnRule().operator])[this.returnRule().operator]}
           options={this.translate(this.props.content.operators)}
           property={this.props.property}
           setAction={this.props.setOperatorAction}
@@ -88,14 +88,14 @@ class Property
         <InptNumber
           value={this.returnRule().value}
           property={this.props.property}
-          setAction={this.props.setPropertyAction} 
+          setAction={this.props.setPropertyAction}
           min={this.props.min}
           max={this.props.max}
         />
       </>
     );
   }
-  
+
   translate(words: any[]): any {
     const result: any = {};
     words.forEach((word) => {
@@ -104,20 +104,25 @@ class Property
     });
     return result;
   }
-  
+
   checkIfRuleOn(): any {
-    const rules = this.props.filter.rules[this.props.filter.ruleIndex][
-        Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]];
-    
+    const rules =
+      this.props.filter.rules[this.props.filter.ruleIndex][
+        Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]
+      ];
+
     for (let key in rules) {
-      if (key == this.props.property) return true;  
+      if (key == this.props.property) return true;
     }
-      
+
     return false;
   }
-  
+
   returnRule(): any {
-    const rule = this.props.filter.rules[this.props.filter.ruleIndex][Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]][this.props.property];
+    const rule =
+      this.props.filter.rules[this.props.filter.ruleIndex][
+        Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]
+      ][this.props.property];
     if (rule) {
       return rule;
     }
@@ -129,14 +134,13 @@ const mapStateToProps = (store) => {
   return {
     filter: store.filter,
     content: store.filter.contents,
-    lang : store.language.lang
+    lang: store.language.lang,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setPropertyAction: (property: any) =>
-      dispatch(setProperty(property)),
+    setPropertyAction: (property: any) => dispatch(setProperty(property)),
     setOperatorAction: (property: any) => dispatch(setOperator(property)),
     setTurnerAction: (property: any) => dispatch(setTurner(property)),
   };

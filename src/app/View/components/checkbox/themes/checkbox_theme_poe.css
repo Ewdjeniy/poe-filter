@@ -1,0 +1,29 @@
+.checkbox_theme_poe {
+  background: #0d0e10;
+  height: 100%;
+  .checkbox {
+     &__label {
+      display: grid;
+      grid-template-columns: 1em 1fr;
+      padding-left: 0.5em;
+    }
+    &__input {
+      display: none;
+    }
+    &__box {
+      width: 1em;
+      height: 1em;
+      border: 0.15em solid #634928;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      justify-self: center;
+    }
+
+    &__checker {
+      width: 0.47em;
+      height: 0.47em;
+      background: #ffffff;
+    }
+  }
+}

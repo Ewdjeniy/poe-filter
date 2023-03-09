@@ -7,7 +7,9 @@ interface CheckboxProps {
   defaultVal?: any;
 }
 
-interface CheckboxState {}
+interface CheckboxState {
+  boxClass?: any;
+}
 
 interface CheckboxI {
   render(): JSX.Element;
