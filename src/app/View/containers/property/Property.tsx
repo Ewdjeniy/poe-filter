@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import store from '../../store/configureStore';
-import { setProperty, setOperator, setTurner } from '../filter/filterActions';
+import { setProperty, setOperator, setTurner, setMultiple } from '../filter/filterActions';
 import Checkbox from '../../components/checkbox/Checkbox';
 import InptNumber from '../../components/inptNumber/InptNumber';
 import Select from '../../components/Select';
+import Multiple from '../../components/Multiple';
 import Radio from '../../components/radio/Radio';
 
 class Property
@@ -20,9 +21,29 @@ class Property
           defaultVal={this.props.defaultVal}
           setAction={this.props.setTurnerAction}
           label={this.props.lang[this.props.property]}
+          title={
+            this.translate([this.props.property + 'Title'])[
+              this.props.property + 'Title'
+            ]
+          }
         />
         {this[`to${this.props.instance}`]()}
       </article>
+    );
+  }
+  
+  toMultiple(): any {
+    return (
+      <>
+        <Multiple
+          placeholder={
+            this.translate([this.returnRule().value])[this.returnRule().value]
+          }
+          options={this.translate(this.props.content[this.props.options])}
+          property={this.props.property}
+          setAction={this.props.setMultipleAction}
+        />
+      </>
     );
   }
 
@@ -33,6 +54,7 @@ class Property
         <Select
           value={this.returnRule().operator}
           options={this.translate(this.props.content.operators)}
+          multiple="true"
           property={this.props.property}
           setAction={this.props.setOperatorAction}
         />
@@ -42,7 +64,9 @@ class Property
       <>
         {operator}
         <Select
-          value={this.returnRule().value}
+          placeholder={
+            this.translate([this.returnRule().value])[this.returnRule().value]
+          }
           options={this.translate(this.props.content[this.props.options])}
           property={this.props.property}
           setAction={this.props.setPropertyAction}
@@ -54,21 +78,11 @@ class Property
   toBoolean(): any {
     return (
       <>
-        <Radio
-          label={this.translate(['True'])['True']}
-          name="this.props.property"
-          instance="radio"
-          value="True"
-          checked={this.returnRule().value}
-          property={this.props.property}
-          setAction={this.props.setPropertyAction}
-        />
-        <Radio
-          label={this.translate(['False'])['False']}
-          name="this.props.property"
-          instance="radio"
-          value="False"
-          checked={this.returnRule().value}
+        <Select
+          placeholder={
+            this.translate([this.returnRule().value])[this.returnRule().value]
+          }
+          options={this.translate(['True', 'False'])}
           property={this.props.property}
           setAction={this.props.setPropertyAction}
         />
@@ -80,7 +94,11 @@ class Property
     return (
       <>
         <Select
-          placeholder={this.translate([this.returnRule().operator])[this.returnRule().operator]}
+          placeholder={
+            this.translate([this.returnRule().operator])[
+              this.returnRule().operator
+            ]
+          }
           options={this.translate(this.props.content.operators)}
           property={this.props.property}
           setAction={this.props.setOperatorAction}
@@ -143,6 +161,7 @@ const mapDispatchToProps = (dispatch) => {
     setPropertyAction: (property: any) => dispatch(setProperty(property)),
     setOperatorAction: (property: any) => dispatch(setOperator(property)),
     setTurnerAction: (property: any) => dispatch(setTurner(property)),
+    setMultipleAction: (property: any) => dispatch(setMultiple(property)),
   };
 };
 

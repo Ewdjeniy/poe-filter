@@ -1,4 +1,4 @@
-interface SelectProps {
+interface MultipleProps {
   placeholder?: any;
   options?: any;
   setAction?: any;
@@ -9,14 +9,14 @@ interface SelectProps {
   multiple?: any;
 }
 
-interface SelectState {
+interface MultipleState {
   inptValue?: string;
   inputClass?: any;
   triangleClass?: any;
   spinnerClass?: any;
 }
 
-interface SelectI {
+interface MultipleI {
   inpt?: any;
   render(): JSX.Element;
 }

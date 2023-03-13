@@ -14,6 +14,8 @@ interface PropertyProps {
   defaultVal?: any;
   options?: any;
   lang?: any;
+  title?: any;
+  setMultipleAction?: any;
 }
 
 interface PropertyState {}

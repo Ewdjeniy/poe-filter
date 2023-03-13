@@ -71,7 +71,9 @@ class PropertiesBox
           >
             {this.translate([this.props.label])[this.props.label]}
           </span>
-          <div className={this.state.propertiesBoxPropertiesClass}>{this.props.label == 'Blocks' ? block() : propertyList}</div>
+          <div className={this.state.propertiesBoxPropertiesClass}>
+            {this.props.label == 'Blocks' ? block() : propertyList}
+          </div>
         </div>
       </article>
     );

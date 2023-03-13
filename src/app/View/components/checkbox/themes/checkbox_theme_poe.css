@@ -2,7 +2,7 @@
   background: #0d0e10;
   height: 100%;
   .checkbox {
-     &__label {
+    &__label {
       display: grid;
       grid-template-columns: 1em 1fr;
       padding-left: 0.5em;
@@ -24,6 +24,10 @@
       width: 0.47em;
       height: 0.47em;
       background: #ffffff;
+    }
+
+    &__span {
+      margin-left: 0.4em;
     }
   }
 }

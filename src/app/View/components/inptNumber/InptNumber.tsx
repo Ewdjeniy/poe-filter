@@ -5,7 +5,7 @@ class InptNumber
   implements InptNumberI
 {
   handleChange(e: React.ChangeEvent<HTMLInputElement>): any {
-    this.props.setAction({ key: this.props.property, value: e.target.value }); 
+    this.props.setAction({ key: this.props.property, value: e.target.value });
   }
 
   render(): JSX.Element {
@@ -26,7 +26,6 @@ class InptNumber
 }
 
 export default InptNumber;
-
 
 //<input
 //          className="inpt-number__input"

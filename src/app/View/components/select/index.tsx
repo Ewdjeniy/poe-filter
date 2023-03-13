@@ -17,11 +17,6 @@ class Select
     this.inpt = React.createRef();
   }
 
-  handleActivate(): any {
-    this.inpt.current.focus();
-    return false;
-  }
-
   handleBlur(): any {
     this.setState({
       inputClass: 'select__input select__input_blur',
@@ -40,7 +35,7 @@ class Select
 
   handlePointerDown(value: any): any {
     if (this.props.property) {
-      this.props.setAction({key: this.props.property, value: value});
+      this.props.setAction({ key: this.props.property, value: value });
     } else {
       this.props.setAction(value);
     }
@@ -60,13 +55,15 @@ class Select
     const options: any = this.props.options;
     const optionsList: any = Object.keys(options).map((opt: any, i: any) => {
       if (options[opt].toString().includes(this.state.inptValue)) {
-        return (<li
-          key={`li_${i}`}
-          className="select__li"
-          onPointerDown={() => this.handlePointerDown(opt)}
-        >
-          {options[opt].toString()}
-        </li>);
+        return (
+          <li
+            key={`li_${i}`}
+            className="select__li"
+            onPointerDown={() => this.handlePointerDown(opt)}
+          >
+            {options[opt].toString()}
+          </li>
+        );
       }
     });
     return (
@@ -82,7 +79,10 @@ class Select
             onFocus={this.handleFocus.bind(this)}
             onBlur={this.handleBlur.bind(this)}
           />
-          <div className="select__div" onClick={() => this.inpt.current.focus()}>
+          <div
+            className="select__div"
+            onClick={() => this.inpt.current.focus()}
+          >
             <div className={this.state.triangleClass}></div>
           </div>
         </div>

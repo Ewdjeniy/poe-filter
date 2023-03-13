@@ -25,6 +25,16 @@ export function setBlock(property: any): object {
   };
 }
 
+export function setMultiple(property: any): object {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_MULTIPLE',
+      key: property.key,
+      value: property.value,
+    });
+  };
+}
+
 export function setProperty(property: any): object {
   return (dispatch) => {
     dispatch({

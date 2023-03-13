@@ -10,6 +10,8 @@ export const initialState: any = {
       Show: {
         LinkedSockets: { operator: '>', value: 5 },
         Rarity: { operator: '>', value: 'Magic' },
+        ArchnemesisMod: { values: ['Steel-infused'] },
+//        HasExplicitMod: { operator: '>=', value: [2, 'of Haast', 'of Tzteosh', 'of Ephij'] },
       },
     },
     {
@@ -68,8 +70,31 @@ function filterReducer(state = initialState, action): FilterState {
     case 'SET_PROPERTY':
       rulesCopy = state.rules.slice(0);
       key = Object.keys(rulesCopy[state.ruleIndex])[0];
-      console.log(action);
-      rulesCopy[state.ruleIndex][key][action.key].value = action.value;
+      if (rulesCopy[state.ruleIndex][key][action.key]) {
+        rulesCopy[state.ruleIndex][key][action.key].value = action.value;
+      }
+      return {
+        ...state,
+        rules: rulesCopy,
+      };
+      break;
+    case 'SET_MULTIPLE':
+      rulesCopy = state.rules.slice(0);
+      key = Object.keys(rulesCopy[state.ruleIndex])[0];
+      const returnValueIndex = (valuesArr:any[], val: any) => {
+        for (let i = 0; i < valuesArr.length; i++) {
+          if (val == valuesArr[i]) return i;
+        }
+        return false;
+      };
+      if (rulesCopy[state.ruleIndex][key][action.key]) {
+        const i = returnValueIndex(rulesCopy[state.ruleIndex][key][action.key].values, action.value);
+        if (i || i === 0) {
+          rulesCopy[state.ruleIndex][key][action.key].values.splice(i, 1);
+        } else {
+          rulesCopy[state.ruleIndex][key][action.key].values.push(action.value);
+        }
+      }
       return {
         ...state,
         rules: rulesCopy,

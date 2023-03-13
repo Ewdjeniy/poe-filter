@@ -14,10 +14,16 @@ class Code extends React.Component<CodeProps, CodeState> implements CodeI {
               </div>
             );
           } else {
+            let value: any = '';
+            if (Array.isArray(rule[block][ruleName].value)) {
+              rule[block][ruleName].value.forEach(val => value += ` "${val}"`);
+            } else {
+              value = rule[block][ruleName].value;
+            }
             return (
               <div key={`div_${i}`}>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                {`${ruleName} ${rule[block][ruleName].value}`}
+                {`${ruleName} ${value}`}
               </div>
             );
           }

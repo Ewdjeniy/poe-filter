@@ -1,10 +1,13 @@
 interface CheckboxProps {
   name?: any;
-  label?: any;
+  checkboxLabel?: any;
   checked?: any;
   setAction?: any;
   property?: any;
   defaultVal?: any;
+  props?: any;
+  label?: any;
+  title?: any;
 }
 
 interface CheckboxState {

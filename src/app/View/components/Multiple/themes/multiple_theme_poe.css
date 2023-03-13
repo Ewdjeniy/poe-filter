@@ -1,7 +1,7 @@
-.select_theme_poe {
+.multiple_theme_poe {
   height: 1.8em;
   background: #1e2124;
-  .select {
+  .multiple {
     &__flex {
       height: 100%;
     }
@@ -52,6 +52,9 @@
     &__li {
       padding: 0.4em 0 0.4em 0.4em;
       &:hover {
+        background: #465260;
+      }
+      &_active {
         background: #465260;
       }
     }

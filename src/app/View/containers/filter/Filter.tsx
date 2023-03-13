@@ -21,9 +21,7 @@ class Filter
       <section className="filter">
         <menu className="filter__menu">menu</menu>
         <article className="filter__controls">
-          <form className="control-panel">
-            {propertiesBoxes}
-          </form>
+          <form className="control-panel">{propertiesBoxes}</form>
           <Rules />
         </article>
         <Output />
