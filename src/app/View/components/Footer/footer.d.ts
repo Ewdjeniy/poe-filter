@@ -1,10 +1,6 @@
-interface FooterProps {
-  filter?: any;
-}
+interface FooterProps {}
 
-interface FooterState {
-  count?: number;
-}
+interface FooterState {}
 
 interface FooterI {
   render(): JSX.Element;

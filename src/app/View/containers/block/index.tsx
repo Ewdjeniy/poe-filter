@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import store from '../../store/configureStore';
-import Radio from '../../components/radio/Radio';
-import { setBlock } from '../filter/filterActions';
+import Radio from '../../components/Radio';
+import { setBlock } from '../../actions/filterActions';
 
 class Block extends React.Component<BlockProps, BlockState> implements BlockI {
   render(): JSX.Element {
-    const value = Object.keys(
-      this.props.filter.rules[this.props.filter.ruleIndex],
-    )[0];
+    const value = Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0];
 
     const blockList: any = this.props.blocks.map((block: any, i: any) => (
       <Radio
@@ -21,6 +19,7 @@ class Block extends React.Component<BlockProps, BlockState> implements BlockI {
         setAction={this.props.setBlockAction}
       />
     ));
+
     return <article className="block">{blockList}</article>;
   }
 }

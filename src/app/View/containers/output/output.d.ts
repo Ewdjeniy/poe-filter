@@ -1,10 +1,8 @@
 interface OutputProps {
-  filter?: any;
+  rules?: any;
 }
 
-interface OutputState {
-  count?: number;
-}
+interface OutputState {}
 
 interface OutputI {
   render(): JSX.Element;

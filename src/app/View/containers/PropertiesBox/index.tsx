@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import store from '../../store/configureStore';
-import Property from '../property/Property';
-import Block from '../block/Block';
+import Property from '../Property';
+import Block from '../Block';
 
 class PropertiesBox
   extends React.Component<PropertiesBoxProps, PropertiesBoxState>
@@ -13,9 +13,39 @@ class PropertiesBox
     this.state = {
       propertiesBoxTurner: 0,
       propertiesBoxCheckboxClass: 'properties-box__checkbox',
-      propertiesBoxPropertiesClass:
-        'properties-box__properties properties-box__properties_hidden',
+      propertiesBoxPropertiesClass: 'properties-box__properties properties-box__properties_hidden',
     };
+  }
+
+  render(): JSX.Element {
+    const propertyList: any = this.props.rules[this.props.label].map((rule: any, i: any) => {
+      const props: any = { key: `property_${i}` };
+      for (let key in rule) {
+        props[key] = rule[key];
+      }
+      return React.createElement(Property, props);
+    });
+
+    const block = () => <Block />;
+
+    return (
+      <article className="properties-box">
+        <div
+          className={this.state.propertiesBoxCheckboxClass}
+          onClick={this.onCheckboxChange.bind(this)}
+        >
+          <div className="properties-box__checker"></div>
+        </div>
+        <div className="properties-box__box">
+          <span className="properties-box__span" onClick={this.onCheckboxChange.bind(this)}>
+            {this.translate([this.props.label])[this.props.label]}
+          </span>
+          <div className={this.state.propertiesBoxPropertiesClass}>
+            {this.props.label == 'Blocks' ? block() : propertyList}
+          </div>
+        </div>
+      </article>
+    );
   }
 
   onCheckboxChange() {
@@ -29,8 +59,7 @@ class PropertiesBox
     } else {
       this.setState({
         propertiesBoxTurner: 1,
-        propertiesBoxCheckboxClass:
-          'properties-box__checkbox properties-box__checkbox_checked',
+        propertiesBoxCheckboxClass: 'properties-box__checkbox properties-box__checkbox_checked',
         propertiesBoxPropertiesClass: 'properties-box__properties',
       });
     }
@@ -44,40 +73,6 @@ class PropertiesBox
     });
     return result;
   }
-
-  render(): JSX.Element {
-    const propertyList: any = this.props.rules[this.props.label].map(
-      (rule: any, i: any) => {
-        const props: any = { key: `property_${i}` };
-        for (let key in rule) {
-          props[key] = rule[key];
-        }
-        return React.createElement(Property, props);
-      },
-    );
-    const block = () => <Block />;
-    return (
-      <article className="properties-box">
-        <div
-          className={this.state.propertiesBoxCheckboxClass}
-          onClick={this.onCheckboxChange.bind(this)}
-        >
-          <div className="properties-box__checker"></div>
-        </div>
-        <div className="properties-box__box">
-          <span
-            className="properties-box__span"
-            onClick={this.onCheckboxChange.bind(this)}
-          >
-            {this.translate([this.props.label])[this.props.label]}
-          </span>
-          <div className={this.state.propertiesBoxPropertiesClass}>
-            {this.props.label == 'Blocks' ? block() : propertyList}
-          </div>
-        </div>
-      </article>
-    );
-  }
 }
 
 const mapStateToProps = (store) => {
@@ -87,8 +82,4 @@ const mapStateToProps = (store) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PropertiesBox);
+export default connect(mapStateToProps)(PropertiesBox);

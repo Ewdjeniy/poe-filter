@@ -3,6 +3,7 @@
   .inpt-number {
     &__number {
       height: 1.8em;
+      width: 100%;
       background: #1e2124;
       color: #ffffff;
       text-align: center;
@@ -20,6 +21,30 @@
       }
       &:focus {
         outline: #777777 solid 1px;
+      }
+      &_red {
+        border-bottom: 1px solid #551111;
+        max-width: 2.5em;
+      }
+      &_green {
+        border-bottom: 1px solid #115511;
+        max-width: 2.5em;
+      }
+      &_blue {
+        border-bottom: 1px solid #111155;
+        max-width: 2.5em;
+      }
+      &_white {
+        border-bottom: 1px solid #ffffff;
+        max-width: 2.5em;
+      }
+      &_abyss {
+        border-bottom: 1px solid brown;
+        max-width: 2.5em;
+      }
+      &_delve {
+        border-bottom: 1px solid grey;
+        max-width: 2.5em;
       }
     }
   }

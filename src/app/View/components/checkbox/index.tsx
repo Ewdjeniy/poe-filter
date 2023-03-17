@@ -1,34 +1,16 @@
 import * as React from 'react';
 
-class Checkbox
-  extends React.Component<CheckboxProps, CheckboxState>
-  implements CheckboxI
-{
+class Checkbox extends React.Component<CheckboxProps, CheckboxState> implements CheckboxI {
   constructor(props) {
     super(props);
-    const boxClass = this.props.checked
+    const checkerClass = this.props.checked
       ? 'checkbox__checker checkbox__checker_checked'
       : 'checkbox__checker';
     this.state = {
-      boxClass: boxClass,
+      checkerClass: checkerClass,
     };
   }
 
-  onCheckboxChange(e: React.ChangeEvent<HTMLInputElement>): any {
-    const boxClass = this.props.checked
-      ? 'checkbox__checker'
-      : 'checkbox__checker checkbox__checker_checked';
-    this.props.setAction(
-      Object.assign(
-        {},
-        { key: this.props.property, turner: e.target.checked },
-        this.props.defaultVal,
-      ),
-    );
-    this.setState({
-      boxClass: boxClass,
-    });
-  }
   render(): JSX.Element {
     return (
       <div className="checkbox checkbox_theme_poe">
@@ -55,6 +37,22 @@ class Checkbox
         </label>
       </div>
     );
+  }
+
+  onCheckboxChange(e: React.ChangeEvent<HTMLInputElement>): any {
+    const checkerClass = this.props.checked
+      ? 'checkbox__checker'
+      : 'checkbox__checker checkbox__checker_checked';
+    this.props.setAction(
+      Object.assign(
+        {},
+        { key: this.props.property, turner: e.target.checked },
+        this.props.defaultVal,
+      ),
+    );
+    this.setState({
+      checkerClass: checkerClass,
+    });
   }
 }
 

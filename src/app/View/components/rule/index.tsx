@@ -1,6 +1,20 @@
 import * as React from 'react';
 
 class Rule extends React.Component<RuleProps, RuleState> implements RuleI {
+  render(): JSX.Element {
+    const className = this.props.active ? 'rule__div rule_active' : 'rule__div';
+    return (
+      <div className="rule">
+        <div className={className} onClick={this.handleRuleClick.bind(this)}>
+          {this.incloseFirstWordInSpan(this.props.content)}
+        </div>
+        <span className="rule__x" onClick={this.handleXClick.bind(this)}>
+          x
+        </span>
+      </div>
+    );
+  }
+
   handleRuleClick(): any {
     this.props.setAction(this.props.index);
   }
@@ -20,20 +34,6 @@ class Rule extends React.Component<RuleProps, RuleState> implements RuleI {
         <i className="rule__i">{wordsArray[0]}</i>
         {restWords}
       </>
-    );
-  }
-
-  render(): JSX.Element {
-    const className = this.props.active ? 'rule__div rule_active' : 'rule__div';
-    return (
-      <div className="rule">
-        <div className={className} onClick={this.handleRuleClick.bind(this)}>
-          {this.incloseFirstWordInSpan(this.props.content)}
-        </div>
-        <span className="rule__x" onClick={this.handleXClick.bind(this)}>
-          x
-        </span>
-      </div>
     );
   }
 }

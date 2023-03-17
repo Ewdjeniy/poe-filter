@@ -16,6 +16,7 @@ interface PropertyProps {
   lang?: any;
   title?: any;
   setMultipleAction?: any;
+  setSocketsAction?: any;
 }
 
 interface PropertyState {}

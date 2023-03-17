@@ -1,16 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import store from '../../store/configureStore';
-import Radio from '../../components/radio/Radio';
-import { setLanguage } from './languageActions';
-import languages from './languages.js';
+import Radio from '../../components/Radio';
+import { setLanguage } from '../../actions/languageActions';
+import languages from '../../defaults/defaultLanguage';
 
 const langs = JSON.parse(languages);
 
-class Language
-  extends React.Component<LanguageProps, LanguageState>
-  implements LanguageI
-{
+class Language extends React.Component<LanguageProps, LanguageState> implements LanguageI {
   render(): JSX.Element {
     const langList = Object.keys(langs).map((lang, i) => (
       <Radio
@@ -24,6 +21,7 @@ class Language
         setAction={this.props.setLanguageAction.bind(this)}
       />
     ));
+
     return <article className="language">{langList}</article>;
   }
 }

@@ -1,7 +1,7 @@
 .property {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 0.2em;
+  grid-auto-flow: column;
+  grid-gap: 0.2em;
   align-items: center;
   height: 1.8em;
   border-left: 1px solid #634928;

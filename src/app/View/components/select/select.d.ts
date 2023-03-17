@@ -2,11 +2,8 @@ interface SelectProps {
   placeholder?: any;
   options?: any;
   setAction?: any;
-  setTurnerAction?: any;
-  name?: any;
   value?: any;
   property?: any;
-  multiple?: any;
 }
 
 interface SelectState {

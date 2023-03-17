@@ -1,0 +1,14 @@
+.menu {
+  display: flex;
+  &__li {
+    list-style: none;
+    color: #d6d0bd;
+    background: rgba(14, 14, 14, 0.85);
+    padding: 0.5em;
+    cursor: pointer;
+    user-select: none;
+    &_active {
+      background: #5a3806;
+    }
+  }
+}

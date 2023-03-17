@@ -1,14 +1,13 @@
 interface FilterProps {
-  radio?: object;
   rules?: any;
-  setBlockAction?: function;
+  setBlockAction?: any;
 }
 
 interface FilterState {
-  ruleIndex: number;
-  rules: object[];
+  active?: string;
 }
 
 interface FilterI {
+  instance?: any;
   render(): JSX.Element;
 }

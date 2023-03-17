@@ -1,4 +1,57 @@
 const content = JSON.stringify({
+  rules: {
+    Blocks: ['Show', 'Hide', 'Minimal'],
+    SocketFilters: [
+      {
+        property: 'LinkedSockets',
+        instance: 'OperatorNum',
+        defaultVal: { operator: '>', numValues: [4] },
+        min: '2',
+        max: '6',
+      },
+      {
+        property: 'SocketGroup',
+        instance: 'OperatorNumColors',
+        defaultVal: {
+          operator: '>=',
+          numValues: [5],
+          sockets: { R: 1, G: 3, B: 0, A: 0, D: 0, W: 0 },
+        },
+        min: '2',
+        max: '6',
+      },
+    ],
+
+    Miscellaneous: [
+      {
+        instance: 'OperatorNumMultiple',
+        defaultVal: {
+          operator: '>=',
+          numValues: [2],
+          textValues: ['"of Haast"', '"of Tzteosh"', '"of Ephij"'],
+        },
+        property: 'HasExplicitMod',
+        options: 'ExplicitMods',
+        min: '1',
+        max: '6',
+      },
+//      {
+//        instance: 'Multiple',
+//        defaultVal: { values: ['Toxic'] },
+//        property: 'ArchnemesisMod',
+//        options: 'ArchnemesisMods',
+//      },
+    ],
+//    Actions: [
+//      {
+//        property: 'PlayAlertSound',
+//        instance: 'NumericTwo',
+//        defaultVal: { values: [1, 100] },
+//        min: '1',
+//        max: '16',
+//      },
+//    ],
+  },
   operators: ['=', '!', '<=', '>=', '<', '>', '=='],
   GemQualityType: ['Superior', 'Divergent', 'Anomalous', 'Phantasmal'],
   ArchnemesisMods: [
@@ -71,43 +124,8 @@ const content = JSON.stringify({
     'Innocence-touched',
     'Kitava-touched',
   ],
+  ExplicitMods: ['of Haast', 'of Tzteosh', 'of Ephij'],
   Rarity: ['Normal', 'Magic', 'Rare', 'Unique'],
-  rules: {
-    Blocks: ['Show', 'Hide', 'Minimal'],
-//    SocketFilters: [
-//      {
-//        property: 'LinkedSockets',
-//        instance: 'Numeric',
-//        defaultVal: { operator: '>', value: '4' },
-//        min: '2',
-//        max: '6',
-//      },
-//    ],
-
-//    Miscellaneous: [
-//      {
-//        instance: 'Multiple',
-//        defaultVal: { value: ['Toxic'] },
-//        property: 'ArchnemesisMod',
-//        options: 'ArchnemesisMods',
-//      },
-//        instance: 'Boolean',
-//        defaultVal: { value: 'False' },
-//        property: 'AlternateQuality',
-//      },
-//      {
-//        instance: 'Boolean',
-//        defaultVal: { value: 'False' },
-//        property: 'AnyEnchantment',
-//      },
-//    ],
-
-    //    {"instance": "Numeric", "defaultVal": {"operator": ">", "value": "4"}, "property": "LinkedSockets", "min": "2", "max": "6"},
-    //    {"instance": "Select", "defaultVal": {"operator": ">", "value": "Magic"}, "property": "Rarity", "options": "Rarity"},
-    //    {"instance": "Select", "defaultVal": {"value": "Superior"}, "property": "GemQualityType", "options": "GemQualityType"},
-    //    {"instance": "Numeric", "defaultVal": {"operator": ">", "value": "30"}, "property": "AreaLevel", "min": "1", "max": "100"},
-    //    {"instance": "Boolean", "defaultVal": {"value": "False"}, "property": "AlternateQuality"}
-  },
 });
 
 export default content;

@@ -1,9 +1,6 @@
 import * as React from 'react';
 
-class Select
-  extends React.Component<SelectProps, SelectState>
-  implements SelectI
-{
+class Select extends React.Component<SelectProps, SelectState> implements SelectI {
   inpt: any;
 
   constructor(props) {
@@ -15,6 +12,44 @@ class Select
       spinnerClass: 'select__ul select__ul_off',
     };
     this.inpt = React.createRef();
+  }
+
+  render(): JSX.Element {
+    const options: any = this.props.options;
+    const optionsList: any = Object.keys(options).map((opt: any, i: any) => {
+      if (options[opt].toString().includes(this.state.inptValue)) {
+        return (
+          <li
+            key={`li_${i}`}
+            className="select__li"
+            onPointerDown={() => this.handlePointerDown(opt)}
+          >
+            {options[opt].toString()}
+          </li>
+        );
+      }
+    });
+
+    return (
+      <div className="select select_theme_poe">
+        <div className="select__flex">
+          <input
+            className={this.state.inputClass}
+            ref={this.inpt}
+            type="text"
+            placeholder={this.props.placeholder}
+            value={this.state.inptValue}
+            onChange={(e: any) => this.handleInput(e)}
+            onFocus={this.handleFocus.bind(this)}
+            onBlur={this.handleBlur.bind(this)}
+          />
+          <div className="select__div" onClick={() => this.inpt.current.focus()}>
+            <div className={this.state.triangleClass}></div>
+          </div>
+        </div>
+        <ul className={this.state.spinnerClass}>{optionsList}</ul>
+      </div>
+    );
   }
 
   handleBlur(): any {
@@ -49,46 +84,6 @@ class Select
     this.setState({
       inptValue: e.target.value,
     });
-  }
-
-  render(): JSX.Element {
-    const options: any = this.props.options;
-    const optionsList: any = Object.keys(options).map((opt: any, i: any) => {
-      if (options[opt].toString().includes(this.state.inptValue)) {
-        return (
-          <li
-            key={`li_${i}`}
-            className="select__li"
-            onPointerDown={() => this.handlePointerDown(opt)}
-          >
-            {options[opt].toString()}
-          </li>
-        );
-      }
-    });
-    return (
-      <div className="select select_theme_poe">
-        <div className="select__flex">
-          <input
-            className={this.state.inputClass}
-            ref={this.inpt}
-            type="text"
-            placeholder={this.props.placeholder}
-            value={this.state.inptValue}
-            onChange={(e: any) => this.handleInput(e)}
-            onFocus={this.handleFocus.bind(this)}
-            onBlur={this.handleBlur.bind(this)}
-          />
-          <div
-            className="select__div"
-            onClick={() => this.inpt.current.focus()}
-          >
-            <div className={this.state.triangleClass}></div>
-          </div>
-        </div>
-        <ul className={this.state.spinnerClass}>{optionsList}</ul>
-      </div>
-    );
   }
 }
 

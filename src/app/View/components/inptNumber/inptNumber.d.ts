@@ -5,11 +5,13 @@ interface InptNumberProps {
   max?: any;
   setAction?: any;
   property?: any;
+  color?: any;
+  placeholder?: any;
+  letter?: any;
+  index?: any;
 }
 
-interface InptNumberState {
-  value: number;
-}
+interface InptNumberState {}
 
 interface InptNumberI {
   render(): JSX.Element;

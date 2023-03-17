@@ -1,3 +1,14 @@
+export function setSockets(property: any): object {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_SOCKETS',
+      key: property.key,
+      letter: property.letter,
+      value: property.value,
+    });
+  };
+}
+
 export function deleteBlock(index: number): object {
   return (dispatch) => {
     dispatch({
@@ -40,6 +51,8 @@ export function setProperty(property: any): object {
     dispatch({
       type: 'SET_PROPERTY',
       key: property.key,
+      valueType: property.valueType,
+      index: property.index,
       value: property.value,
     });
   };
@@ -62,7 +75,9 @@ export function setTurner(property: any): object {
       turner: property.turner,
       key: property.key,
       operator: property.operator,
-      value: property.value,
+      numValues: property.numValues,
+      textValues: property.textValues,
+      sockets: property.sockets,
     });
   };
 }

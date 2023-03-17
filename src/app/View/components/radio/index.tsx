@@ -9,10 +9,6 @@ class Radio extends React.Component<RadioProps, RadioState> implements RadioI {
     };
   }
 
-  onRadioChange(): void {
-    this.props.setAction({ key: this.props.property, value: this.props.value });
-  }
-
   render(): JSX.Element {
     return <div className="radio">{this[`to${this.props.instance}`]()}</div>;
   }
@@ -21,11 +17,7 @@ class Radio extends React.Component<RadioProps, RadioState> implements RadioI {
     return (
       <>
         <label className="radio__label">
-          <img
-            className="radio__img"
-            src={this.props.imgSrc}
-            alt={this.props.imgAlt}
-          />
+          <img className="radio__img" src={this.props.imgSrc} alt={this.props.imgAlt} />
           <input
             className="radio__input radio_hidden"
             name={this.props.name}
@@ -55,6 +47,10 @@ class Radio extends React.Component<RadioProps, RadioState> implements RadioI {
         </label>
       </>
     );
+  }
+
+  onRadioChange(): void {
+    this.props.setAction({ key: this.props.property, value: this.props.value });
   }
 }
 

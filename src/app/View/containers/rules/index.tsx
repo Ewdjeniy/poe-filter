@@ -1,30 +1,42 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import store from '../../store/configureStore';
-import Rule from '../../components/rule/Rule';
+import Rule from '../../components/Rule';
 import Select from '../../components/Select';
-import { setIndex, addBlock, deleteBlock } from '../filter/filterActions';
+import { setIndex, addBlock, deleteBlock } from '../../actions/filterActions';
 
 class Rules extends React.Component<RulesProps, RulesState> implements RulesI {
   render(): JSX.Element {
     const ruleList = this.props.filter.rules.map((rule, i) => {
-      let content =
-        this.translate([`${Object.keys(rule)[0]}`])[`${Object.keys(rule)[0]}`] +
-        ': ';
+      let content = this.translate([`${Object.keys(rule)[0]}`])[`${Object.keys(rule)[0]}`] + ': ';
       for (let key in rule) {
         const ruleProperties = rule[key];
         for (let property in ruleProperties) {
           const ruleElements = ruleProperties[property];
           content += ' ' + this.translate([property])[property] + ' - ';
           for (let ruleEl in ruleElements) {
-            content +=
-              ' ' +
-              this.translate([ruleElements[ruleEl]])[ruleElements[ruleEl]];
+            switch (ruleEl) {
+              case 'numValues':
+                ruleElements['numValues'].forEach((val) => content += ` ${val}`);
+                break;
+              case 'sockets':
+                const sockets = ruleElements[ruleEl];
+                content += ' (';
+                for (let color in sockets) {
+                  content +=
+                    sockets[color] > 0 ? ` ${sockets[color]} ${this.translate([color])[color]}` : '';
+                }
+                content += ' )';
+                break;
+              default:
+                content += ` ${this.translate([ruleElements[ruleEl]])[ruleElements[ruleEl]]}`;
+            }
           }
           content += ', ';
         }
       }
       content = content.slice(0, -2) + '.';
+
       return (
         <Rule
           key={`rule_${i}`}
@@ -36,6 +48,7 @@ class Rules extends React.Component<RulesProps, RulesState> implements RulesI {
         />
       );
     });
+
     return (
       <section className="rules">
         {ruleList}

@@ -22,10 +22,7 @@ declare function appendSetStyleFixtures(html: string): void;
 declare function loadJSONFixtures(...uls: string[]): jasmine.JSONFixtures;
 declare function getJSONFixture(url: string): any;
 
-declare function spyOnEvent(
-  selector: string,
-  eventName: string,
-): jasmine.JQueryEventSpy;
+declare function spyOnEvent(selector: string, eventName: string): jasmine.JQueryEventSpy;
 
 namespace jasmine {
   const JQuery: JasmineJQuery;

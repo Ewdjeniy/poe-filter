@@ -29,10 +29,7 @@
     "linebreak-style": ["error", "windows"],
     "brace-style": 0,
     "class-methods-use-this": 0,
-    "max-len": [
-      "error",
-      { "ignoreComments": true, "ignoreTrailingComments": true }
-    ],
+    "max-len": ["error", { "ignoreComments": true, "ignoreTrailingComments": true }],
     "spaced-comment": 0,
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "implicit-arrow-linebreak": 0,

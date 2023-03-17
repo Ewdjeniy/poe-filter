@@ -25,10 +25,7 @@
       'color-hex-length': 'short',
       'color-no-invalid-hex': true,
       'comment-empty-line-before':
-        [
-          'always',
-          { except: ['first-nested'], ignore: ['stylelint-commands'] },
-        ],
+        ['always', { except: ['first-nested'], ignore: ['stylelint-commands'] }],
       'comment-no-empty': true,
       'comment-whitespace-inside': 'always',
       'custom-property-empty-line-before':
@@ -48,10 +45,7 @@
       'order/properties-order':
         [
           [
-            {
-              properties:
-                ['position', 'z-index', 'top', 'right', 'bottom', 'left'],
-            },
+            { properties: ['position', 'z-index', 'top', 'right', 'bottom', 'left'] },
             {
               properties:
                 [
@@ -300,10 +294,7 @@
       'property-case': 'lower',
       'property-no-unknown': true,
       'rule-empty-line-before':
-        [
-          'always-multi-line',
-          { except: ['first-nested'], ignore: ['after-comment'] },
-        ],
+        ['always-multi-line', { except: ['first-nested'], ignore: ['after-comment'] }],
       'selector-attribute-brackets-space-inside': 'never',
       'selector-attribute-operator-space-after': 'never',
       'selector-attribute-operator-space-before': 'never',

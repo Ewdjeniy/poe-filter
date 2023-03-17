@@ -1,33 +1,26 @@
-import content from './contents.js';
+import content from '../defaults/defaultContent';
+import defaultInitialState from '../defaults/defaultInitialState';
 
 const contents = JSON.parse(content);
 
-export const initialState: any = {
-  ruleIndex: 0,
-  contents: contents,
-  rules: [
-    {
-      Show: {
-        LinkedSockets: { operator: '>', value: 5 },
-        Rarity: { operator: '>', value: 'Magic' },
-        ArchnemesisMod: { values: ['Steel-infused'] },
-//        HasExplicitMod: { operator: '>=', value: [2, 'of Haast', 'of Tzteosh', 'of Ephij'] },
-      },
-    },
-    {
-      Hide: {
-        LinkedSockets: { operator: '<', value: 3 },
-        AreaLevel: { operator: '<', value: 80 },
-      },
-    },
-  ],
-};
+export const initialState: any = Object.assign({}, defaultInitialState);
 
 function filterReducer(state = initialState, action): FilterState {
   let rulesCopy: any[];
   let key: string;
 
   switch (action.type) {
+    case 'SET_SOCKETS':
+      rulesCopy = state.rules.slice(0);
+      key = Object.keys(rulesCopy[state.ruleIndex])[0];
+      if (rulesCopy[state.ruleIndex][key][action.key]) {
+        rulesCopy[state.ruleIndex][key][action.key].sockets[action.letter] = action.value;
+      }
+      return {
+        ...state,
+        rules: rulesCopy,
+      };
+      break;
     case 'DELETE_BLOCK':
       rulesCopy = state.rules.slice(0);
       rulesCopy.splice(action.index, 1);
@@ -57,10 +50,7 @@ function filterReducer(state = initialState, action): FilterState {
     case 'SET_BLOCK':
       rulesCopy = state.rules.slice(0);
 
-      rulesCopy[state.ruleIndex] = setKey(
-        rulesCopy[state.ruleIndex],
-        action.value,
-      );
+      rulesCopy[state.ruleIndex] = setKey(rulesCopy[state.ruleIndex], action.value);
 
       return {
         ...state,
@@ -71,7 +61,9 @@ function filterReducer(state = initialState, action): FilterState {
       rulesCopy = state.rules.slice(0);
       key = Object.keys(rulesCopy[state.ruleIndex])[0];
       if (rulesCopy[state.ruleIndex][key][action.key]) {
-        rulesCopy[state.ruleIndex][key][action.key].value = action.value;
+        if (rulesCopy[state.ruleIndex][key][action.key][`${action.valueType}Values`]) {
+          rulesCopy[state.ruleIndex][key][action.key][`${action.valueType}Values`][action.index] = action.value;
+        }
       }
       return {
         ...state,
@@ -81,18 +73,21 @@ function filterReducer(state = initialState, action): FilterState {
     case 'SET_MULTIPLE':
       rulesCopy = state.rules.slice(0);
       key = Object.keys(rulesCopy[state.ruleIndex])[0];
-      const returnValueIndex = (valuesArr:any[], val: any) => {
+      const returnValueIndex = (valuesArr: any[], val: any) => {
         for (let i = 0; i < valuesArr.length; i++) {
           if (val == valuesArr[i]) return i;
         }
         return false;
       };
       if (rulesCopy[state.ruleIndex][key][action.key]) {
-        const i = returnValueIndex(rulesCopy[state.ruleIndex][key][action.key].values, action.value);
+        const i = returnValueIndex(
+          rulesCopy[state.ruleIndex][key][action.key].textValues,
+          action.value,
+        );
         if (i || i === 0) {
-          rulesCopy[state.ruleIndex][key][action.key].values.splice(i, 1);
+          rulesCopy[state.ruleIndex][key][action.key].textValues.splice(i, 1);
         } else {
-          rulesCopy[state.ruleIndex][key][action.key].values.push(action.value);
+          rulesCopy[state.ruleIndex][key][action.key].textValues.push(action.value);
         }
       }
       return {
@@ -115,9 +110,12 @@ function filterReducer(state = initialState, action): FilterState {
       rulesCopy = state.rules.slice(0);
       key = Object.keys(rulesCopy[state.ruleIndex])[0];
       if (action.turner) {
-        rulesCopy[state.ruleIndex][key][action.key] = action.operator
-          ? { operator: action.operator, value: action.value }
-          : { value: action.value };
+        let rule: any = {};
+        if (action.operator) rule.operator = action.operator;
+        if (action.numValues) rule.numValues = action.numValues;
+        if (action.textValues) rule.textValues = action.textValues;
+        if (action.sockets) rule.sockets = action.sockets;
+        rulesCopy[state.ruleIndex][key][action.key] = rule;
       } else {
         delete rulesCopy[state.ruleIndex][key][action.key];
       }
