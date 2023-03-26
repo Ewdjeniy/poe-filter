@@ -1,14 +1,18 @@
 .multiple {
   cursor: pointer;
+
   &__flex {
     display: flex;
     align-items: center;
   }
+
   &__input {
     cursor: pointer;
+
     &_blur {
       text-align: center;
     }
+
     &_focus {
       text-align: left;
     }
@@ -22,9 +26,11 @@
 
   &__ul {
     list-style: none;
+
     &_off {
       display: none;
     }
+
     &_on {
       display: block;
     }

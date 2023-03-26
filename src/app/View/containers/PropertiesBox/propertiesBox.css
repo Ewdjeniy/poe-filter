@@ -1,16 +1,16 @@
 .properties-box {
   display: grid;
-  grid-template-columns: 3em 1fr;
   width: 100%;
+  padding: 0.5em 0;
   cursor: pointer;
   user-select: none;
-  padding: 0.5em 0 0.5em 0;
+  grid-template-columns: 3em 1fr;
 
   &__checkbox {
+    display: flex;
     width: 1em;
     height: 1em;
     border: 0.15em solid #634928;
-    display: flex;
     justify-content: center;
     align-items: center;
     justify-self: center;
@@ -20,7 +20,7 @@
     display: none;
     width: 0.47em;
     height: 0.47em;
-    background: #ffffff;
+    background: #fff;
   }
 
   &__span {

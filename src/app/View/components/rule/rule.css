@@ -1,23 +1,27 @@
 .rule {
   display: grid;
-  grid-template-columns: 1fr 2em;
+  margin-bottom: 0.2em;
   cursor: pointer;
   user-select: none;
-  margin-bottom: 0.2em;
+  grid-template-columns: 1fr 2em;
+
   &__div {
     padding: 0.4em 0 0.4em 0.3em;
-    background: #0d0e10;
     border-left: 1px solid #634928;
+    background: #0d0e10;
   }
+
   &__i {
     background: #232420;
   }
+
   &_active {
     background: #1e2124;
   }
+
   &__x {
+    color: #fff;
     font-size: 1.5em;
-    color: #ffffff;
     justify-self: center;
     align-self: baseline;
   }

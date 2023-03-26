@@ -1,14 +1,17 @@
 .filter {
   width: 95em;
-  margin: 0 auto;
   max-width: 100%;
+  margin: 0 auto;
+
   &__controls {
     border-top: 1px solid #5a3806;
-    background: #000000;
+    background: #000;
   }
+
   &__div {
     display: flex;
   }
+
   &__buttons {
     display: flex;
     justify-content: flex-end;
@@ -16,9 +19,9 @@
 }
 
 .control-panel {
-  color: #e4ddc9;
   width: 50%;
   padding-right: 2em;
+  color: #e4ddc9;
 }
 
 .filter-menu {

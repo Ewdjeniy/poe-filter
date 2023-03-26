@@ -1,11 +1,14 @@
 .radio {
   user-select: none;
+
   &__label {
     cursor: pointer;
   }
+
   &__img {
     margin-right: 0.3em;
   }
+
   &_hidden {
     display: none;
   }

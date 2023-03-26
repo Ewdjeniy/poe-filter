@@ -1,50 +1,59 @@
 .inpt-number_theme_poe {
   height: 1.8em;
+
   .inpt-number {
     &__number {
-      height: 1.8em;
       width: 100%;
-      background: #1e2124;
-      color: #ffffff;
+      height: 1.8em;
       text-align: center;
+      color: #fff;
       border: none;
-      height: 100%;
-      appearance: none;
+      background: #1e2124;
       -moz-appearance: textfield;
+      appearance: none;
+
       &::-webkit-outer-spin-button {
-        -webkit-appearance: none;
         margin: 0;
+        -webkit-appearance: none;
       }
+
       &::-webkit-inner-spin-button {
-        -webkit-appearance: none;
         margin: 0;
+        -webkit-appearance: none;
       }
+
       &:focus {
-        outline: #777777 solid 1px;
+        outline: #777 solid 1px;
       }
+
       &_red {
-        border-bottom: 1px solid #551111;
         max-width: 2.5em;
+        border-bottom: 1px solid #511;
       }
+
       &_green {
-        border-bottom: 1px solid #115511;
         max-width: 2.5em;
+        border-bottom: 1px solid #151;
       }
+
       &_blue {
-        border-bottom: 1px solid #111155;
         max-width: 2.5em;
+        border-bottom: 1px solid #115;
       }
+
       &_white {
-        border-bottom: 1px solid #ffffff;
         max-width: 2.5em;
+        border-bottom: 1px solid #fff;
       }
+
       &_abyss {
+        max-width: 2.5em;
         border-bottom: 1px solid brown;
-        max-width: 2.5em;
       }
+
       &_delve {
-        border-bottom: 1px solid grey;
         max-width: 2.5em;
+        border-bottom: 1px solid grey;
       }
     }
   }
