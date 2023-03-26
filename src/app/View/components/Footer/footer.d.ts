@@ -1,6 +1,10 @@
-interface FooterProps {}
+interface FooterProps {
+  translate(text: string): string;
+}
 
-interface FooterState {}
+interface FooterState {
+  key?: string;
+}
 
 interface FooterI {
   render(): JSX.Element;

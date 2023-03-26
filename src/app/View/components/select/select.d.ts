@@ -1,19 +1,23 @@
 interface SelectProps {
-  placeholder?: any;
-  options?: any;
-  setAction?: any;
-  value?: any;
-  property?: any;
+  placeholder?: string;
+  options: object;
+  setAction(options: object): void;
+  property?: string;
+  index?: number;
 }
 
 interface SelectState {
-  inptValue?: string;
-  inputClass?: any;
-  triangleClass?: any;
-  spinnerClass?: any;
+  inptValue: string;
+  inputClass: string;
+  triangleClass: string;
+  spinnerClass: string;
 }
 
 interface SelectI {
-  inpt?: any;
+  inpt: React.RefObject<HTMLInputElement>;
+  handleBlur(): void;
+  handleFocus(): void;
+  handlePointerDown(value: string): void;
+  handleInput(e: React.ChangeEvent<HTMLInputElement>): void;
   render(): JSX.Element;
 }

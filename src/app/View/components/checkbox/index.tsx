@@ -1,13 +1,16 @@
 import * as React from 'react';
 
-class Checkbox extends React.Component<CheckboxProps, CheckboxState> implements CheckboxI {
+class Checkbox
+  extends React.Component<CheckboxProps, CheckboxState>
+  implements CheckboxI
+{
   constructor(props) {
     super(props);
     const checkerClass = this.props.checked
       ? 'checkbox__checker checkbox__checker_checked'
       : 'checkbox__checker';
     this.state = {
-      checkerClass: checkerClass,
+      checkerClass,
     };
   }
 
@@ -20,7 +23,9 @@ class Checkbox extends React.Component<CheckboxProps, CheckboxState> implements 
             name={this.props.name}
             type="checkbox"
             checked={this.props.checked}
-            onChange={(e) => this.onCheckboxChange(e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              this.onCheckboxChange(e)
+            }
           />
           <div className="checkbox__box">
             <div
@@ -39,19 +44,26 @@ class Checkbox extends React.Component<CheckboxProps, CheckboxState> implements 
     );
   }
 
-  onCheckboxChange(e: React.ChangeEvent<HTMLInputElement>): any {
+  onCheckboxChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const checkerClass = this.props.checked
       ? 'checkbox__checker'
       : 'checkbox__checker checkbox__checker_checked';
-    this.props.setAction(
-      Object.assign(
-        {},
-        { key: this.props.property, turner: e.target.checked },
-        this.props.defaultVal,
-      ),
-    );
+    if (this.props.value) {
+      const index = this.props.index ? this.props.index : 0;
+      const value = e.target.checked ? this.props.value : '';
+      this.props.setAction({
+        key: this.props.property,
+        index,
+        valueType: 'text',
+        value,
+      });
+    }
+    this.props.setAction({
+      ...{ key: this.props.property, turner: e.target.checked },
+      ...this.props.defaultVal,
+    });
     this.setState({
-      checkerClass: checkerClass,
+      checkerClass,
     });
   }
 }

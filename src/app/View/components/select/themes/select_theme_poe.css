@@ -1,20 +1,24 @@
 .select_theme_poe {
   height: 1.8em;
   background: #1e2124;
+
   .select {
     &__flex {
       height: 100%;
     }
+
     &__input {
-      background: transparent;
-      color: #c5c5c6;
       width: 100%;
       height: 1.8em;
+      color: #c5c5c6;
       border: none;
       outline: none;
+      background: transparent;
+
       &_blur {
         text-align: center;
       }
+
       &_focus {
         padding-left: 0.7em;
       }
@@ -26,31 +30,34 @@
 
     &__triangle {
       transition: border 0.3s ease;
+
       &_top {
-        border: 0.35em solid transparent;
-        border-top: 0.35em solid #999999;
         margin-top: 0.35em;
+        border: 0.35em solid transparent;
+        border-top: 0.35em solid #999;
       }
+
       &_bottom {
         border: 0.35em solid transparent;
-        border-bottom: 0.35em solid #999999;
+        border-bottom: 0.35em solid #999;
       }
     }
 
     &__ul {
-      width: 100%;
-      background: #1e2124;
-      border: 1px solid #5a3806;
-      border-top: 0;
-      padding: 0.4em 0 0 0;
-      max-height: 15em;
-      overflow-y: scroll;
       position: relative;
       z-index: 1;
+      overflow-y: scroll;
+      width: 100%;
+      padding: 0.4em 0 0;
+      border: 1px solid #5a3806;
+      max-height: 15em;
+      background: #1e2124;
+      border-top: 0;
     }
 
     &__li {
       padding: 0.4em 0 0.4em 0.4em;
+
       &:hover {
         background: #465260;
       }

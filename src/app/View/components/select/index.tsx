@@ -1,7 +1,10 @@
 import * as React from 'react';
 
-class Select extends React.Component<SelectProps, SelectState> implements SelectI {
-  inpt: any;
+class Select
+  extends React.Component<SelectProps, SelectState>
+  implements SelectI
+{
+  inpt: React.RefObject<HTMLInputElement>;
 
   constructor(props) {
     super(props);
@@ -15,20 +18,19 @@ class Select extends React.Component<SelectProps, SelectState> implements Select
   }
 
   render(): JSX.Element {
-    const options: any = this.props.options;
-    const optionsList: any = Object.keys(options).map((opt: any, i: any) => {
-      if (options[opt].toString().includes(this.state.inptValue)) {
-        return (
-          <li
-            key={`li_${i}`}
-            className="select__li"
-            onPointerDown={() => this.handlePointerDown(opt)}
-          >
-            {options[opt].toString()}
-          </li>
-        );
-      }
-    });
+    const { options } = this.props;
+
+    const optionsList: JSX.Element[] = Object.keys(options)
+      .filter((opt) => options[opt].toString().includes(this.state.inptValue))
+      .map((opt: string, i: number) => (
+        <li
+          key={`li_${i}`}
+          className="select__li"
+          onPointerDown={() => this.handlePointerDown(opt)}
+        >
+          {options[opt].toString()}
+        </li>
+      ));
 
     return (
       <div className="select select_theme_poe">
@@ -39,11 +41,16 @@ class Select extends React.Component<SelectProps, SelectState> implements Select
             type="text"
             placeholder={this.props.placeholder}
             value={this.state.inptValue}
-            onChange={(e: any) => this.handleInput(e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              this.handleInput(e)
+            }
             onFocus={this.handleFocus.bind(this)}
             onBlur={this.handleBlur.bind(this)}
           />
-          <div className="select__div" onClick={() => this.inpt.current.focus()}>
+          <div
+            className="select__div"
+            onClick={() => this.inpt.current.focus()}
+          >
             <div className={this.state.triangleClass}></div>
           </div>
         </div>
@@ -52,7 +59,7 @@ class Select extends React.Component<SelectProps, SelectState> implements Select
     );
   }
 
-  handleBlur(): any {
+  handleBlur(): void {
     this.setState({
       inputClass: 'select__input select__input_blur',
       triangleClass: 'select__triangle select__triangle_top',
@@ -60,7 +67,7 @@ class Select extends React.Component<SelectProps, SelectState> implements Select
     });
   }
 
-  handleFocus(): any {
+  handleFocus(): void {
     this.setState({
       inputClass: 'select__input select__input_focus',
       triangleClass: 'select__triangle select__triangle_bottom',
@@ -68,11 +75,20 @@ class Select extends React.Component<SelectProps, SelectState> implements Select
     });
   }
 
-  handlePointerDown(value: any): any {
+  handlePointerDown(value: string): boolean {
     if (this.props.property) {
-      this.props.setAction({ key: this.props.property, value: value });
+      const index = this.props.index ? this.props.index : 0;
+      this.props.setAction({
+        key: this.props.property,
+        index,
+        valueType: 'text',
+        value,
+      });
     } else {
-      this.props.setAction(value);
+      this.props.setAction({
+        key: this.props.property,
+        value,
+      });
     }
     this.setState({
       inptValue: '',
@@ -80,7 +96,7 @@ class Select extends React.Component<SelectProps, SelectState> implements Select
     return false;
   }
 
-  handleInput(e: any): any {
+  handleInput(e: React.ChangeEvent<HTMLInputElement>): void {
     this.setState({
       inptValue: e.target.value,
     });

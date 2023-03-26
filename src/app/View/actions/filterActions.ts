@@ -1,4 +1,24 @@
-export function setSockets(property: any): object {
+export function clearFilter(): object {
+  return (dispatch) => {
+    dispatch({
+      type: 'CLEAR_FILTER',
+    });
+  };
+}
+
+export function setColor(property: ActionProperty): object {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_COLOR',
+      key: property.key,
+      index: property.index,
+      rgb: property.rgb,
+      alpha: property.alpha,
+    });
+  };
+}
+
+export function setSockets(property: ActionProperty): object {
   return (dispatch) => {
     dispatch({
       type: 'SET_SOCKETS',
@@ -13,21 +33,21 @@ export function deleteBlock(index: number): object {
   return (dispatch) => {
     dispatch({
       type: 'DELETE_BLOCK',
-      index: index,
+      index,
     });
   };
 }
 
-export function addBlock(block: any): object {
+export function addBlock(obj: ActionProperty): object {
   return (dispatch) => {
     dispatch({
       type: 'ADD_BLOCK',
-      block: block,
+      block: obj.value,
     });
   };
 }
 
-export function setBlock(property: any): object {
+export function setBlock(property: ActionProperty): object {
   return (dispatch) => {
     dispatch({
       type: 'SET_BLOCK',
@@ -36,7 +56,7 @@ export function setBlock(property: any): object {
   };
 }
 
-export function setMultiple(property: any): object {
+export function setMultiple(property: ActionProperty): object {
   return (dispatch) => {
     dispatch({
       type: 'SET_MULTIPLE',
@@ -46,7 +66,7 @@ export function setMultiple(property: any): object {
   };
 }
 
-export function setProperty(property: any): object {
+export function setProperty(property: ActionProperty): object {
   return (dispatch) => {
     dispatch({
       type: 'SET_PROPERTY',
@@ -58,7 +78,7 @@ export function setProperty(property: any): object {
   };
 }
 
-export function setOperator(property: any): object {
+export function setOperator(property: ActionProperty): object {
   return (dispatch) => {
     dispatch({
       type: 'SET_OPERATOR',
@@ -68,7 +88,7 @@ export function setOperator(property: any): object {
   };
 }
 
-export function setTurner(property: any): object {
+export function setTurner(property: ActionProperty): object {
   return (dispatch) => {
     dispatch({
       type: 'SET_TURNER',
@@ -77,16 +97,17 @@ export function setTurner(property: any): object {
       operator: property.operator,
       numValues: property.numValues,
       textValues: property.textValues,
+      colorValues: property.colorValues,
       sockets: property.sockets,
     });
   };
 }
 
-export function setIndex(index: any): object {
+export function setIndex(index: number): object {
   return (dispatch) => {
     dispatch({
       type: 'SET_INDEX',
-      index: index,
+      index,
     });
   };
 }

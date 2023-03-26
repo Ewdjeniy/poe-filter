@@ -1,7 +1,10 @@
 import * as React from 'react';
 
-class Multiple extends React.Component<MultipleProps, MultipleState> implements MultipleI {
-  inpt: any;
+class Multiple
+  extends React.Component<MultipleProps, MultipleState>
+  implements MultipleI
+{
+  inpt: React.RefObject<HTMLInputElement>;
 
   constructor(props) {
     super(props);
@@ -17,18 +20,22 @@ class Multiple extends React.Component<MultipleProps, MultipleState> implements 
   }
 
   render(): JSX.Element {
-    const options: any = this.props.options;
-    const optionsList: any = Object.keys(options).map((opt: any, i: any) => {
-      if (options[opt].toString().includes(this.state.inptValue)) {
-        const returnActive: any = () => {
+    const { options } = this.props;
+
+    const optionsList: JSX.Element[] = Object.keys(options)
+      .filter((opt) => options[opt].toString().includes(this.state.inptValue))
+      .map((opt: string, i: number) => {
+        const returnActive = (): boolean => {
           if (
             this.props.placeholder &&
             !Array.isArray(this.props.placeholder) &&
-            this.props.placeholder == options[opt].toString()
-          )
+            this.props.placeholder === options[opt].toString()
+          ) {
             return true;
-          for (let i = 0; i < this.props.placeholder.length; i++) {
-            if (this.props.placeholder[i] == options[opt].toString()) {
+          }
+          const placeholderArr = this.props.placeholder.split(',');
+          for (let i = 0; i < placeholderArr.length; i += 1) {
+            if (placeholderArr[i] === options[opt].toString()) {
               return true;
             }
           }
@@ -37,15 +44,19 @@ class Multiple extends React.Component<MultipleProps, MultipleState> implements 
         return (
           <li
             key={`li_${i}`}
-            className={returnActive() ? 'multiple__li multiple__li_active' : 'multiple__li'}
+            className={
+              returnActive()
+                ? 'multiple__li multiple__li_active'
+                : 'multiple__li'
+            }
             onPointerDown={() => this.handlePointerDown(opt)}
             onPointerUp={this.handlePointerUp.bind(this)}
           >
             {options[opt].toString()}
           </li>
         );
-      }
-    });
+      });
+
     return (
       <div className="multiple multiple_theme_poe">
         <div className="multiple__flex">
@@ -55,11 +66,16 @@ class Multiple extends React.Component<MultipleProps, MultipleState> implements 
             type="text"
             placeholder={this.props.placeholder}
             value={this.state.inptValue}
-            onChange={(e: any) => this.handleInput(e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              this.handleInput(e)
+            }
             onFocus={this.handleFocus.bind(this)}
             onBlur={this.handleBlur.bind(this)}
           />
-          <div className="multiple__div" onClick={() => this.inpt.current.focus()}>
+          <div
+            className="multiple__div"
+            onClick={() => this.inpt.current.focus()}
+          >
             <div className={this.state.triangleClass}></div>
           </div>
         </div>
@@ -68,7 +84,7 @@ class Multiple extends React.Component<MultipleProps, MultipleState> implements 
     );
   }
 
-  handleBlur(): any {
+  handleBlur(): void {
     this.setState({
       inputClass: 'multiple__input multiple__input_blur',
       triangleClass: 'multiple__triangle multiple__triangle_top',
@@ -76,7 +92,7 @@ class Multiple extends React.Component<MultipleProps, MultipleState> implements 
     });
   }
 
-  handleFocus(): any {
+  handleFocus(): void {
     this.setState({
       inputClass: 'multiple__input multiple__input_focus',
       triangleClass: 'multiple__triangle multiple__triangle_bottom',
@@ -84,16 +100,22 @@ class Multiple extends React.Component<MultipleProps, MultipleState> implements 
     });
   }
 
-  handlePointerDown(value: any): any {
+  handlePointerDown(value: string): void {
     this.handleBlur = () => false;
     if (this.props.property) {
-      this.props.setAction({ key: this.props.property, value: value });
+      const index = this.props.index ? this.props.index : 0;
+      this.props.setAction({
+        key: this.props.property,
+        index,
+        valueType: 'text',
+        value,
+      });
     } else {
-      this.props.setAction(value);
+      this.props.setAction({ key: this.props.property, value });
     }
   }
 
-  handlePointerUp(): any {
+  handlePointerUp(): void {
     this.inpt.current.focus();
     this.handleBlur = () => {
       this.setState({
@@ -104,7 +126,7 @@ class Multiple extends React.Component<MultipleProps, MultipleState> implements 
     };
   }
 
-  handleInput(e: any): any {
+  handleInput(e: React.ChangeEvent<HTMLInputElement>): void {
     this.setState({
       inptValue: e.target.value,
     });

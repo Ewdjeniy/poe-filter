@@ -1,23 +1,27 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import store from '../../store/configureStore';
 import Radio from '../../components/Radio';
-import { setLanguage } from '../../actions/languageActions';
-import languages from '../../defaults/defaultLanguage';
+import setLanguage from '../../actions/languageActions';
+import languages from '../../defaults/Languages';
 
 const langs = JSON.parse(languages);
 
-class Language extends React.Component<LanguageProps, LanguageState> implements LanguageI {
+class Language
+  extends React.Component<LanguageProps, LanguageState>
+  implements LanguageI
+{
   render(): JSX.Element {
     const langList = Object.keys(langs).map((lang, i) => (
       <Radio
         key={`lang_${i}`}
         instance="Flag"
         name="Language"
+        /* eslint-disable */
         imgSrc={require(`./images/${lang}.png`)}
+        /* eslint-enable */
         imgAlt={lang}
         value={lang}
-        checked={this.props.language}
+        checked={this.props.language === lang}
         setAction={this.props.setLanguageAction.bind(this)}
       />
     ));
@@ -26,16 +30,12 @@ class Language extends React.Component<LanguageProps, LanguageState> implements 
   }
 }
 
-const mapStateToProps = (store) => {
-  return {
-    language: store.language.language,
-  };
-};
+const mapStateToProps = (store) => ({
+  language: store.language.language,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setLanguageAction: (language: string) => dispatch(setLanguage(language)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  setLanguageAction: (property: object) => dispatch(setLanguage(property)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Language);

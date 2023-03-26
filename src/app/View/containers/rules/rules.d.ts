@@ -1,13 +1,14 @@
 interface RulesProps {
-  filter?: any;
-  setIndexAction?: any;
-  lang?: any;
-  addBlockAction?: any;
-  deleteBlockAction?: any;
+  setIndexAction(index: number): void;
+  addBlockAction(obj: object): void;
+  deleteBlockAction(index: number): void;
+  filter: defaultInitialState;
+  translateOptions(options: string[]): object;
+  translate(text: string): string;
 }
 
 interface RulesState {
-  count?: number;
+  key?: string;
 }
 
 interface RulesI {

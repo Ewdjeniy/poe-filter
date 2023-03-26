@@ -1,0 +1,10 @@
+.inpt-color {
+  display: flex;
+  &__input {
+    display: none;
+  }
+  &__div {
+    cursor: pointer;
+    background: #ffffff;
+  }
+}

@@ -1,19 +1,20 @@
 interface RadioProps {
   label?: string;
-  name?: string;
+  name: string;
   value?: string;
-  checked?: any;
-  setAction?: any;
-  property?: any;
-  instance?: any;
-  imgSrc?: any;
-  imgAlt?: any;
+  checked?: boolean;
+  setAction(options: object): void;
+  property?: string;
+  instance?: string;
+  imgSrc?: string;
+  imgAlt?: string;
 }
 
 interface RadioState {
-  value?: any;
+  key?: string;
 }
 
 interface RadioI {
   render(): JSX.Element;
+  renderRadio(instance: string): JSX.Element;
 }

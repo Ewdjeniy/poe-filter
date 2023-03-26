@@ -17,7 +17,9 @@ const htmlPlugins = pages.map(
     new HtmlWebpackPlugin({
       getData: () => {
         try {
-          return JSON.parse(fs.readFileSync(`./src/pages/${fileName}/data.json`, 'utf8'));
+          return JSON.parse(
+            fs.readFileSync(`./src/pages/${fileName}/data.json`, 'utf8'),
+          );
         } catch (e) {
           console.warn(`data.json was not provided for page ${fileName}`);
           return {};

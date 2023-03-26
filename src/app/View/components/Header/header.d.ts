@@ -1,6 +1,10 @@
-interface HeaderProps {}
+interface HeaderProps {
+  key?: string;
+}
 
-interface HeaderState {}
+interface HeaderState {
+  key?: string;
+}
 
 interface HeaderI {
   render(): JSX.Element;

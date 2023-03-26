@@ -1,4 +1,4 @@
-export function setLanguage(property: any): object {
+function setLanguage(property: ActionProperty): object {
   return (dispatch) => {
     dispatch({
       type: 'SET_LANGUAGE',
@@ -6,3 +6,5 @@ export function setLanguage(property: any): object {
     });
   };
 }
+
+export default setLanguage;

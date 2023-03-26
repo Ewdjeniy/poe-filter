@@ -1,52 +1,43 @@
 import * as React from 'react';
 
 class Radio extends React.Component<RadioProps, RadioState> implements RadioI {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      value: 'english',
-    };
-  }
-
   render(): JSX.Element {
-    return <div className="radio">{this[`to${this.props.instance}`]()}</div>;
+    return <div className="radio">{this.renderRadio(this.props.instance)}</div>;
   }
 
-  toFlag(): any {
-    return (
-      <>
-        <label className="radio__label">
-          <img className="radio__img" src={this.props.imgSrc} alt={this.props.imgAlt} />
-          <input
-            className="radio__input radio_hidden"
-            name={this.props.name}
-            type="radio"
-            value={this.props.value}
-            checked={this.props.checked == this.props.value}
-            onChange={this.onRadioChange.bind(this)}
-          />
-        </label>
-      </>
-    );
-  }
-
-  toRadio(): any {
-    return (
-      <>
-        <label className="radio__label">
-          <input
-            className="radio__input"
-            name={this.props.name}
-            type="radio"
-            value={this.props.value}
-            checked={this.props.checked == this.props.value}
-            onChange={this.onRadioChange.bind(this)}
-          />{' '}
-          {this.props.label}
-        </label>
-      </>
-    );
+  renderRadio(instance: string): JSX.Element {
+    switch (instance) {
+      case 'Radio': {
+        return (
+          <label className="radio__label">
+            <input
+              className="radio__input"
+              name={this.props.name}
+              type="radio"
+              value={this.props.value}
+              checked={this.props.checked}
+              onChange={this.onRadioChange.bind(this)}
+            />{' '}
+            {this.props.label}
+          </label>
+        );
+      }
+      default: {
+        return (
+          <label className="radio__label">
+            <input
+              className="radio__input"
+              name={this.props.name}
+              type="radio"
+              value={this.props.value}
+              checked={this.props.checked}
+              onChange={this.onRadioChange.bind(this)}
+            />{' '}
+            {this.props.label}
+          </label>
+        );
+      }
+    }
   }
 
   onRadioChange(): void {

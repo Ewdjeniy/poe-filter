@@ -1,227 +1,323 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import store from '../../store/configureStore';
 import {
   setProperty,
   setOperator,
   setTurner,
   setMultiple,
   setSockets,
+  setColor,
 } from '../../actions/filterActions';
 import Checkbox from '../../components/Checkbox';
 import InptNumber from '../../components/InptNumber';
 import Select from '../../components/Select';
 import Multiple from '../../components/Multiple';
-import Radio from '../../components/Radio';
+import InptColor from '../../components/InptColor';
 
-class Property extends React.Component<PropertyProps, PropertyState> implements PropertyI {
+class Property
+  extends React.Component<PropertyProps, PropertyState>
+  implements PropertyI
+{
   render(): JSX.Element {
     return (
       <article className="property">
         <Checkbox
           checked={this.checkIfRuleOn()}
           property={this.props.property}
+          name={`${this.props.property}_checkbox`}
           defaultVal={this.props.defaultVal}
           setAction={this.props.setTurnerAction}
-          label={this.props.lang[this.props.property]}
-          title={this.translate([this.props.property + 'Title'])[this.props.property + 'Title']}
+          label={this.props.translate(this.props.property)}
+          title={this.props.translate(`${this.props.property}Title`)}
         />
-        {this[`render${this.props.instance}`]()}
+        {this.renderProperty(this.props.instance)}
       </article>
     );
   }
 
-  renderMultiple(): any {
-    return (
-      <>
-        <Multiple
-          placeholder={this.translate([this.returnRule().values])[this.returnRule().values]}
-          options={this.translate(this.props.content[this.props.options])}
-          property={this.props.property}
-          setAction={this.props.setMultipleAction}
-        />
-      </>
-    );
-  }
-
-  renderOperatorNumColors(): any {
-    const sockets: any = this.returnRule().sockets
-      ? this.returnRule().sockets
-      : this.props.defaultVal.sockets;
-    const colors = {
-      R: 'red',
-      G: 'green',
-      B: 'blue',
-      W: 'white',
-      A: 'abyss',
-      D: 'delve',
-    };
-    const colorsList = Object.keys(sockets).map((color, i) => (
-      <InptNumber
-        key={`color_${i}`}
-        color={colors[color]}
-        letter={color}
-        placeholder={color}
-        value={sockets[color]}
-        max="6"
-        property={this.props.property}
-        setAction={this.props.setSocketsAction}
-      />
-    ));
-    return (
-      <>
-        <Select
-          placeholder={this.translate([this.returnRule().operator])[this.returnRule().operator]}
-          options={this.translate(this.props.content.operators)}
-          property={this.props.property}
-          setAction={this.props.setOperatorAction}
-        />
-        <InptNumber
-          value={this.returnRule().numValues[0]}
-          property={this.props.property}
-          setAction={this.props.setPropertyAction}
-          min={this.props.min}
-          max={this.props.max}
-        />
-        {colorsList}
-      </>
-    );
-  }
-
-  renderOperatorNumMultiple(): any {
-    return (
-      <>
-        <Select
-          placeholder={this.translate([this.returnRule().operator])[this.returnRule().operator]}
-          options={this.translate(this.props.content.operators)}
-          property={this.props.property}
-          setAction={this.props.setOperatorAction}
-        />
-        <InptNumber
-          value={this.returnRule().numValues[0]}
-          property={this.props.property}
-          setAction={this.props.setPropertyAction}
-          min={this.props.min}
-          max={this.props.max}
-        />
-        <Multiple
-          placeholder={this.returnRule().textValues}
-          options={this.translate(this.props.content[this.props.options])}
-          property={this.props.property}
-          setAction={this.props.setMultipleAction}
-        />
-      </>
-    );
-  }
-
-  renderSelect(): any {
-    let operator: any = '';
-    if (this.returnRule().operator) {
-      operator = (
-        <Select
-          value={this.returnRule().operator}
-          options={this.translate(this.props.content.operators)}
-          property={this.props.property}
-          setAction={this.props.setOperatorAction}
-        />
-      );
+  renderProperty(instance: string): JSX.Element {
+    switch (instance) {
+      case 'SelChx': {
+        return (
+          <>
+            <Select
+              placeholder={this.props.translate(
+                this.returnRule().textValues[0],
+              )}
+              options={this.props.translateOptions(
+                this.props.content[this.props.options],
+              )}
+              property={this.props.property}
+              setAction={this.props.setPropertyAction}
+            />
+            <Checkbox
+              checked={!this.returnRule().textValues[1] === false}
+              name={`${this.props.property}_checkbox`}
+              property={this.props.property}
+              label={this.props.translate(this.props.value)}
+              index={1}
+              value={this.props.value}
+              setAction={this.props.setPropertyAction}
+            />
+          </>
+        );
+      }
+      case 'Mul': {
+        return (
+          <>
+            <Multiple
+              placeholder={this.returnRule().textValues.join()}
+              options={this.props.translateOptions(
+                this.props.content[this.props.options],
+              )}
+              property={this.props.property}
+              setAction={this.props.setMultipleAction}
+            />
+          </>
+        );
+      }
+      case 'OprNumSoc': {
+        const sockets: object = this.returnRule().sockets
+          ? this.returnRule().sockets
+          : this.props.defaultVal.sockets;
+        const colors = {
+          R: 'red',
+          G: 'green',
+          B: 'blue',
+          W: 'white',
+          A: 'abyss',
+          D: 'delve',
+        };
+        const colorsList = Object.keys(sockets).map((color, i) => (
+          <InptNumber
+            name={`${this.props.property}_socket_${color}`}
+            key={`color_${i}`}
+            color={colors[color]}
+            letter={color}
+            placeholder={color}
+            value={sockets[color]}
+            max={6}
+            property={this.props.property}
+            setAction={this.props.setSocketsAction}
+          />
+        ));
+        return (
+          <>
+            <Select
+              placeholder={this.props.translate(this.returnRule().operator)}
+              options={this.props.translateOptions(
+                this.props.content.Operators,
+              )}
+              property={this.props.property}
+              setAction={this.props.setOperatorAction}
+            />
+            <InptNumber
+              name={`${this.props.property}_sockets_val`}
+              value={this.returnRule().numValues[0]}
+              property={this.props.property}
+              setAction={this.props.setPropertyAction}
+              min={this.props.min}
+              max={this.props.max}
+            />
+            {colorsList}
+          </>
+        );
+      }
+      case 'OprNumMul': {
+        return (
+          <>
+            <Select
+              placeholder={this.props.translate(this.returnRule().operator)}
+              options={this.props.translateOptions(
+                this.props.content.Operators,
+              )}
+              property={this.props.property}
+              setAction={this.props.setOperatorAction}
+            />
+            <InptNumber
+              name={`${this.props.property}_operator_num_multiple`}
+              value={this.returnRule().numValues[0]}
+              property={this.props.property}
+              setAction={this.props.setPropertyAction}
+              min={this.props.min}
+              max={this.props.max}
+            />
+            <Multiple
+              placeholder={this.returnRule().textValues.join()}
+              options={this.props.translateOptions(
+                this.props.content[this.props.options],
+              )}
+              property={this.props.property}
+              setAction={this.props.setMultipleAction}
+            />
+          </>
+        );
+      }
+      case 'Sel': {
+        let operator: JSX.Element | string = '';
+        if (this.returnRule().operator) {
+          operator = (
+            <Select
+              placeholder={this.props.translate(this.returnRule().operator)}
+              options={this.props.translateOptions(
+                this.props.content.Operators,
+              )}
+              property={this.props.property}
+              setAction={this.props.setOperatorAction}
+            />
+          );
+        }
+        return (
+          <>
+            {operator}
+            <Select
+              placeholder={this.props.translate(
+                this.returnRule().textValues[0],
+              )}
+              options={this.props.translateOptions(
+                this.props.content[this.props.options],
+              )}
+              property={this.props.property}
+              setAction={this.props.setPropertyAction}
+            />
+          </>
+        );
+      }
+      case 'Num': {
+        let operator: JSX.Element | string = '';
+        if (this.returnRule().operator) {
+          operator = (
+            <Select
+              placeholder={this.props.translate(this.returnRule().operator)}
+              options={this.props.translateOptions(
+                this.props.content.Operators,
+              )}
+              property={this.props.property}
+              setAction={this.props.setOperatorAction}
+            />
+          );
+        }
+        return (
+          <>
+            {operator}
+            <InptNumber
+              name={`${this.props.property}_operator_num`}
+              index={0}
+              value={this.returnRule().numValues[0]}
+              property={this.props.property}
+              setAction={this.props.setPropertyAction}
+              min={this.props.min}
+              max={this.props.max}
+            />
+          </>
+        );
+      }
+      case 'Col': {
+        return (
+          <>
+            <InptColor
+              index={0}
+              name={`${this.props.property}_color`}
+              value={this.returnRule().colorValues[0]}
+              property={this.props.property}
+              setAction={this.props.setColorAction}
+              min={this.props.min}
+              max={this.props.max}
+            />
+          </>
+        );
+      }
+      case 'NumSelSel': {
+        return (
+          <>
+            <InptNumber
+              name={`${this.props.property}_num_select_select`}
+              value={
+                this.returnRule().numValues ? this.returnRule().numValues[0] : 2
+              }
+              property={this.props.property}
+              setAction={this.props.setPropertyAction}
+              index={0}
+              min={this.props.min}
+              max={this.props.max}
+            />
+            <Select
+              placeholder={this.props.translate(
+                this.returnRule().textValues[0],
+              )}
+              index={0}
+              options={this.props.translateOptions(
+                this.props.content[this.props.options[0]],
+              )}
+              property={this.props.property}
+              setAction={this.props.setPropertyAction}
+            />
+            <Select
+              placeholder={this.props.translate(
+                this.returnRule().textValues[1],
+              )}
+              index={1}
+              options={this.props.translateOptions(
+                this.props.content[this.props.options[1]],
+              )}
+              property={this.props.property}
+              setAction={this.props.setPropertyAction}
+            />
+          </>
+        );
+      }
+      case 'NumNum': {
+        return (
+          <>
+            <InptNumber
+              name={`${this.props.property}_num_num_first`}
+              value={
+                this.returnRule().numValues ? this.returnRule().numValues[0] : 4
+              }
+              placeholder="id"
+              property={this.props.property}
+              setAction={this.props.setPropertyAction}
+              index={0}
+              min={this.props.min}
+              max={this.props.max}
+            />
+            <InptNumber
+              name={`${this.props.property}_num_num_second`}
+              value={
+                this.returnRule().numValues ? this.returnRule().numValues[1] : 4
+              }
+              placeholder="vol"
+              property={this.props.property}
+              setAction={this.props.setPropertyAction}
+              index={1}
+              min={0}
+              max={300}
+            />
+          </>
+        );
+      }
+      default:
+        return <div>Check instances in content</div>;
     }
-    return (
-      <>
-        {operator}
-        <Select
-          placeholder={this.translate([this.returnRule().value])[this.returnRule().value]}
-          options={this.translate(this.props.content[this.props.options])}
-          property={this.props.property}
-          setAction={this.props.setPropertyAction}
-        />
-      </>
-    );
   }
 
-  renderBoolean(): any {
-    return (
-      <>
-        <Select
-          placeholder={this.translate([this.returnRule().value])[this.returnRule().value]}
-          options={this.translate(['True', 'False'])}
-          property={this.props.property}
-          setAction={this.props.setPropertyAction}
-        />
-      </>
-    );
-  }
-
-  renderOperatorNum(): any {
-    return (
-      <>
-        <Select
-          placeholder={this.translate([this.returnRule().operator])[this.returnRule().operator]}
-          options={this.translate(this.props.content.operators)}
-          property={this.props.property}
-          setAction={this.props.setOperatorAction}
-        />
-        <InptNumber
-          index= {0}
-          value={this.returnRule().numValues[0]}
-          property={this.props.property}
-          setAction={this.props.setPropertyAction}
-          min={this.props.min}
-          max={this.props.max}
-        />
-      </>
-    );
-  }
-
-  renderNumericTwo(): any {
-    return (
-      <>
-        <InptNumber
-          value={this.returnRule().values ? this.returnRule().values[0] : ''}
-          placeholder="id"
-          property={this.props.property}
-          setAction={this.props.setPropertyAction}
-          index="0"
-          min={this.props.min}
-          max={this.props.max}
-        />
-        <InptNumber
-          value={this.returnRule().values ? this.returnRule().values[1] : ''}
-          placeholder="vol"
-          property={this.props.property}
-          setAction={this.props.setPropertyAction}
-          index="1"
-          min="0"
-          max="300"
-        />
-      </>
-    );
-  }
-
-  translate(words: any[]): any {
-    const result: any = {};
-    words.forEach((word) => {
-      const translation = this.props.lang[word] ? this.props.lang[word] : word;
-      result[word] = translation;
-    });
-    return result;
-  }
-
-  checkIfRuleOn(): any {
+  checkIfRuleOn(): boolean {
     const rules =
       this.props.filter.rules[this.props.filter.ruleIndex][
         Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]
       ];
 
-    for (let key in rules) {
-      if (key == this.props.property) return true;
+    const keys = Object.keys(rules);
+
+    for (let i = 0; i < keys.length; i += 1) {
+      if (keys[i] === this.props.property) return true;
     }
 
     return false;
   }
 
-  returnRule(): any {
-    const rule =
+  returnRule(): RuleInterface {
+    const rule: RuleInterface =
       this.props.filter.rules[this.props.filter.ruleIndex][
         Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]
       ][this.props.property];
@@ -232,22 +328,18 @@ class Property extends React.Component<PropertyProps, PropertyState> implements 
   }
 }
 
-const mapStateToProps = (store) => {
-  return {
-    filter: store.filter,
-    content: store.filter.contents,
-    lang: store.language.lang,
-  };
-};
+const mapStateToProps = (store) => ({
+  filter: store.filter,
+  content: store.filter.contents,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setPropertyAction: (property: any) => dispatch(setProperty(property)),
-    setOperatorAction: (property: any) => dispatch(setOperator(property)),
-    setTurnerAction: (property: any) => dispatch(setTurner(property)),
-    setMultipleAction: (property: any) => dispatch(setMultiple(property)),
-    setSocketsAction: (property: any) => dispatch(setSockets(property)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  setPropertyAction: (property: object) => dispatch(setProperty(property)),
+  setOperatorAction: (property: object) => dispatch(setOperator(property)),
+  setTurnerAction: (property: object) => dispatch(setTurner(property)),
+  setMultipleAction: (property: object) => dispatch(setMultiple(property)),
+  setSocketsAction: (property: object) => dispatch(setSockets(property)),
+  setColorAction: (property: object) => dispatch(setColor(property)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Property);

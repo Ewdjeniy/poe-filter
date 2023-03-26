@@ -1,9 +1,11 @@
 interface LanguageProps {
-  setLanguageAction?: any;
-  language?: any;
+  setLanguageAction(property: object): void;
+  language: string;
 }
 
-interface LanguageState {}
+interface LanguageState {
+  key?: string;
+}
 
 interface LanguageI {
   render(): JSX.Element;

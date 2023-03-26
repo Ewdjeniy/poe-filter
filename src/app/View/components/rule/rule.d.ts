@@ -1,12 +1,14 @@
 interface RuleProps {
-  content?: any;
-  index?: any;
-  setAction?: any;
-  deleteAction?: any;
-  active?: any;
+  content: string;
+  index: number;
+  setAction(index: number): void;
+  deleteAction(index: number): void;
+  active?: boolean;
 }
 
-interface RuleState {}
+interface RuleState {
+  key?: string;
+}
 
 interface RuleI {
   render(): JSX.Element;

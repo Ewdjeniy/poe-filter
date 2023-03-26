@@ -1,11 +1,13 @@
 interface BlockProps {
-  filter?: any;
-  blocks?: any;
-  setBlockAction: any;
-  lang?: any;
+  filter: defaultInitialState;
+  blocks: string[];
+  setBlockAction(options: object): void;
+  translate(text: string): string;
 }
 
-interface BlockState {}
+interface BlockState {
+  key?: string;
+}
 
 interface BlockI {
   render(): JSX.Element;

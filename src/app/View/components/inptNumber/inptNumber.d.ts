@@ -1,18 +1,21 @@
 interface InptNumberProps {
-  name?: string;
+  name: string;
   value?: number;
-  min?: any;
-  max?: any;
-  setAction?: any;
-  property?: any;
-  color?: any;
-  placeholder?: any;
-  letter?: any;
-  index?: any;
+  min?: number;
+  max?: number;
+  setAction(options: object): void;
+  property: string;
+  color?: string;
+  placeholder?: string;
+  letter?: string;
+  index?: number;
 }
 
-interface InptNumberState {}
+interface InptNumberState {
+  key?: string;
+}
 
 interface InptNumberI {
   render(): JSX.Element;
+  handleChange(e: React.ChangeEvent<HTMLInputElement>): void;
 }

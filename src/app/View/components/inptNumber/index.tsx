@@ -1,6 +1,9 @@
 import * as React from 'react';
 
-class InptNumber extends React.Component<InptNumberProps, InptNumberState> implements InptNumberI {
+class InptNumber
+  extends React.Component<InptNumberProps, InptNumberState>
+  implements InptNumberI
+{
   render(): JSX.Element {
     return (
       <div className="inpt-number inpt-number_theme_poe">
@@ -22,7 +25,7 @@ class InptNumber extends React.Component<InptNumberProps, InptNumberState> imple
     );
   }
 
-  handleChange(e: React.ChangeEvent<HTMLInputElement>): any {
+  handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     if (this.props.letter) {
       this.props.setAction({
         key: this.props.property,
@@ -30,8 +33,14 @@ class InptNumber extends React.Component<InptNumberProps, InptNumberState> imple
         letter: this.props.letter,
       });
     } else {
-      const index = this.props.index ? this.props.index : 0;
-      this.props.setAction({ key: this.props.property, index: index, valueType: 'num', value: e.target.value });
+      const index: number = this.props.index ? this.props.index : 0;
+      this.props.setAction({
+        key: this.props.property,
+        index,
+        valueType: 'num',
+        value: e.target.value,
+        alpha: e.target.value,
+      });
     }
   }
 }

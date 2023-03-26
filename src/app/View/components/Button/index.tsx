@@ -1,13 +1,21 @@
 import * as React from 'react';
 
-class Button extends React.Component<ButtonProps, ButtonState> implements ButtonI {
+class Button
+  extends React.Component<ButtonProps, ButtonState>
+  implements ButtonI
+{
   render(): JSX.Element {
     return (
-      <input type="button" value="Button" onClick={this.handleClick.bind(this)} />
+      <input
+        className="button button_theme_poe"
+        type="button"
+        value={this.props.value}
+        onClick={this.handleClick.bind(this)}
+      />
     );
   }
-  
-  handleClick(): any {
+
+  handleClick(): void {
     this.props.onclick();
   }
 }

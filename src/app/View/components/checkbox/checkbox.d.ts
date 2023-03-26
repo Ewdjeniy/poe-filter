@@ -1,17 +1,20 @@
 interface CheckboxProps {
-  name?: any;
-  checked?: any;
-  setAction?: any;
-  property?: any;
-  defaultVal?: any;
-  label?: any;
-  title?: any;
+  name: string;
+  checked?: boolean;
+  setAction(options: object): void;
+  property: string;
+  defaultVal?: object;
+  label?: string;
+  title?: string;
+  index?: number;
+  value?: string;
 }
 
 interface CheckboxState {
-  checkerClass?: any;
+  checkerClass: string;
 }
 
 interface CheckboxI {
   render(): JSX.Element;
+  onCheckboxChange(e: React.ChangeEvent<HTMLInputElement>): void;
 }
