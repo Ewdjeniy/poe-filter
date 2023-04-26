@@ -281,6 +281,16 @@ const russian = {
     'SetTextColorTitle': `Sets the text colour of the item label. 
                           Ruthless filters must have an alpha value 
                           of 80 or above`,
+    //BaseType
+    //Abyss Jewels
+    'Ghastly Eye Jewel': 'Самоцвет гипнотического глаза',
+    'Hypnotic Eye Jewel': 'Самоцвет кровожадного глаза',
+    'Murderous Eye Jewel': 'Самоцвет призрачного глаза',
+    'Searching Eye Jewel': 'Самоцвет пытливого глаза',
+    "Amanamu's Gaze": 'Взгляд Аманаму',
+    "Kurgal's Gaze": 'Взгляд Кургала',
+    "Tecrod's Gaze": 'Взгляд Текрода',
+    "Ulaman's Gaze": 'Взгляд Уламана',
   },
 };
 

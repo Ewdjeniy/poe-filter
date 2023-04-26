@@ -5,6 +5,7 @@ interface RulesProps {
   filter: defaultInitialState;
   translateOptions(options: string[]): object;
   translate(text: string): string;
+  onclick(index: number): void;
 }
 
 interface RulesState {

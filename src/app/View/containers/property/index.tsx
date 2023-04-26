@@ -7,10 +7,12 @@ import {
   setMultiple,
   setSockets,
   setColor,
+  setSwitcher,
 } from '../../actions/filterActions';
 import Checkbox from '../../components/Checkbox';
 import InptNumber from '../../components/InptNumber';
 import Select from '../../components/Select';
+import Radio from '../../components/Radio';
 import Multiple from '../../components/Multiple';
 import InptColor from '../../components/InptColor';
 
@@ -21,15 +23,18 @@ class Property
   render(): JSX.Element {
     return (
       <article className="property">
-        <Checkbox
-          checked={this.checkIfRuleOn()}
-          property={this.props.property}
-          name={`${this.props.property}_checkbox`}
-          defaultVal={this.props.defaultVal}
-          setAction={this.props.setTurnerAction}
-          label={this.props.translate(this.props.property)}
-          title={this.props.translate(`${this.props.property}Title`)}
-        />
+        <label className="property__label">
+          <Checkbox
+            checked={this.checkIfRuleOn()}
+            property={this.props.property}
+            name={`${this.props.property}_checkbox`}
+            defaultVal={this.props.defaultVal}
+            setAction={this.props.setTurnerAction}
+          />
+          <span className="property__span">
+            {this.props.translate(this.props.property)}
+          </span>
+        </label>
         {this.renderProperty(this.props.instance)}
       </article>
     );
@@ -37,6 +42,31 @@ class Property
 
   renderProperty(instance: string): JSX.Element {
     switch (instance) {
+      case 'Rad': {
+        const checked: boolean = this.props.filter.rules[this.props.filter.ruleIndex][Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]][this.props.property];
+        return (
+          <>
+            <Radio
+              instance="Radio"
+              label={this.props.translate('Enable')}
+              name={`${this.props.property}_radio`}
+              property={this.props.property}
+              value='true'
+              checked={checked === true}
+              setAction={this.props.setSwitcherAction}
+            />
+            <Radio
+              instance="Radio"
+              label={this.props.translate('Disable')}
+              name={`${this.props.property}_radio`}
+              property={this.props.property}
+              value=''
+              checked={checked === false}
+              setAction={this.props.setSwitcherAction}
+            />
+          </>
+        );
+      }
       case 'SelChx': {
         return (
           <>
@@ -49,16 +79,23 @@ class Property
               )}
               property={this.props.property}
               setAction={this.props.setPropertyAction}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
-            <Checkbox
-              checked={!this.returnRule().textValues[1] === false}
-              name={`${this.props.property}_checkbox`}
-              property={this.props.property}
-              label={this.props.translate(this.props.value)}
-              index={1}
-              value={this.props.value}
-              setAction={this.props.setPropertyAction}
-            />
+            <label className="property__label">
+              <Checkbox
+                checked={!this.returnRule().textValues[1] === false}
+                name={`${this.props.property}_checkbox`}
+                property={this.props.property}
+                setAction={this.props.setPropertyAction}
+                value={this.props.value}
+                index={1}
+              />
+              <span className="property__span">
+                {this.props.translate(this.props.value)}
+              </span>
+            </label>
           </>
         );
       }
@@ -66,12 +103,15 @@ class Property
         return (
           <>
             <Multiple
-              placeholder={this.returnRule().textValues.join()}
+              placeholder={this.translateArray(this.returnRule().textValues)}
               options={this.props.translateOptions(
-                this.props.content[this.props.options],
+                this.checkIfBaseType(this.props.content[this.props.options]),
               )}
               property={this.props.property}
               setAction={this.props.setMultipleAction}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
           </>
         );
@@ -99,6 +139,9 @@ class Property
             max={6}
             property={this.props.property}
             setAction={this.props.setSocketsAction}
+            checked={this.checkIfRuleOn()}
+            defaultVal={this.props.defaultVal}
+            setTurner={this.props.setTurnerAction}
           />
         ));
         return (
@@ -110,6 +153,9 @@ class Property
               )}
               property={this.props.property}
               setAction={this.props.setOperatorAction}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
             <InptNumber
               name={`${this.props.property}_sockets_val`}
@@ -118,6 +164,9 @@ class Property
               setAction={this.props.setPropertyAction}
               min={this.props.min}
               max={this.props.max}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
             {colorsList}
           </>
@@ -133,6 +182,9 @@ class Property
               )}
               property={this.props.property}
               setAction={this.props.setOperatorAction}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
             <InptNumber
               name={`${this.props.property}_operator_num_multiple`}
@@ -141,6 +193,9 @@ class Property
               setAction={this.props.setPropertyAction}
               min={this.props.min}
               max={this.props.max}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
             <Multiple
               placeholder={this.returnRule().textValues.join()}
@@ -149,6 +204,9 @@ class Property
               )}
               property={this.props.property}
               setAction={this.props.setMultipleAction}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
           </>
         );
@@ -164,6 +222,9 @@ class Property
               )}
               property={this.props.property}
               setAction={this.props.setOperatorAction}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
           );
         }
@@ -179,6 +240,9 @@ class Property
               )}
               property={this.props.property}
               setAction={this.props.setPropertyAction}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
           </>
         );
@@ -194,6 +258,9 @@ class Property
               )}
               property={this.props.property}
               setAction={this.props.setOperatorAction}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
           );
         }
@@ -208,6 +275,9 @@ class Property
               setAction={this.props.setPropertyAction}
               min={this.props.min}
               max={this.props.max}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
           </>
         );
@@ -223,6 +293,9 @@ class Property
               setAction={this.props.setColorAction}
               min={this.props.min}
               max={this.props.max}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
           </>
         );
@@ -240,6 +313,9 @@ class Property
               index={0}
               min={this.props.min}
               max={this.props.max}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
             <Select
               placeholder={this.props.translate(
@@ -251,6 +327,9 @@ class Property
               )}
               property={this.props.property}
               setAction={this.props.setPropertyAction}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
             <Select
               placeholder={this.props.translate(
@@ -262,6 +341,9 @@ class Property
               )}
               property={this.props.property}
               setAction={this.props.setPropertyAction}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
           </>
         );
@@ -280,6 +362,9 @@ class Property
               index={0}
               min={this.props.min}
               max={this.props.max}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
             <InptNumber
               name={`${this.props.property}_num_num_second`}
@@ -292,6 +377,9 @@ class Property
               index={1}
               min={0}
               max={300}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
             />
           </>
         );
@@ -299,6 +387,80 @@ class Property
       default:
         return <div>Check instances in content</div>;
     }
+  }
+
+  checkIfBaseType(options: any): string[] {
+    if (this.props.property === 'BaseType') {
+      const rule =
+        this.props.filter.rules[this.props.filter.ruleIndex][
+          Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]
+        ];
+      if (rule.Class) {
+        const classNames: string[] = rule.Class.textValues;
+        let opts: string[] = [];
+        classNames.forEach((className) => {
+          if (className.indexOf('Currency') !== -1) {
+            opts = opts.concat(options.Currency, options['Stackable Currency']);
+          } else if (className.indexOf('Delve') !== -1) {
+            opts = opts.concat(
+              options['Delve Socketable Currency'],
+              options['Delve Stackable Socketable Currency'],
+            );
+          } else if (className.indexOf('Heist') !== -1) {
+            opts = opts.concat(
+              options['Heist Blueprint'],
+              options['Heist Contract'],
+              options['Heist Equipment Reward'],
+              options['Heist Equipment Tool'],
+              options['Heist Equipment Utility'],
+              options['Heist Equipment Weapon'],
+              options['Heist Objective'],
+            );
+          } else if (className.indexOf('Labyrinth') !== -1) {
+            opts = opts.concat(
+              options['Labyrinth Item'],
+              options['Labyrinth Map Item'],
+              options['Labyrinth Trinket'],
+            );
+          } else if (className.indexOf('Jewels') !== -1) {
+            opts = opts.concat(options['Jewels'], options['Abyss Jewels']);
+          } else if (className.indexOf('Flasks') !== -1) {
+            opts = opts.concat(
+              options['Hybrid Flask'],
+              options['Life Flask'],
+              options['Mana Flask'],
+              options['Utility Flasks'],
+            );
+          } else if (className.indexOf('Gems') !== -1) {
+            opts = opts.concat(
+              options['Gems'],
+              options['Active Skill Gem'],
+              options['Support Skill Gem'],
+            );
+          } else {
+            opts = opts.concat(options[className]);
+          }
+        });
+        if (rule.BaseType && rule.BaseType.textValues[0]) {
+          opts = opts.concat(rule.BaseType.textValues);
+        }
+        return opts;
+      }
+      let opts: any = [];
+      Object.values(options).forEach((optionsArr) => {
+        opts = opts.concat(optionsArr);
+      });
+      return opts;
+    }
+    return options;
+  }
+
+  translateArray(words: string[]): string {
+    let result = [];
+    words.forEach((word) => {
+      result.push(this.props.translate(word));
+    });
+    return result.join();
   }
 
   checkIfRuleOn(): boolean {
@@ -340,6 +502,7 @@ const mapDispatchToProps = (dispatch) => ({
   setMultipleAction: (property: object) => dispatch(setMultiple(property)),
   setSocketsAction: (property: object) => dispatch(setSockets(property)),
   setColorAction: (property: object) => dispatch(setColor(property)),
+  setSwitcherAction: (property: object) => dispatch(setSwitcher(property)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Property);

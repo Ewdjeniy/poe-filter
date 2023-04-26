@@ -1,14 +1,15 @@
 interface PropertiesBoxProps {
   label: string;
-  rules?: object[];
+  rules: object[];
   translate(text: string): string;
   translateOptions(options: string[]): object;
+  active: boolean;
+  onclick(index: number): void;
+  index: number;
 }
 
 interface PropertiesBoxState {
-  propertiesBoxTurner: number;
-  propertiesBoxCheckboxClass: string;
-  propertiesBoxPropertiesClass: string;
+  turner?: number;
 }
 
 interface Props {

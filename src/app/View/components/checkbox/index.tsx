@@ -17,29 +17,24 @@ class Checkbox
   render(): JSX.Element {
     return (
       <div className="checkbox checkbox_theme_poe">
-        <label className="checkbox__label">
-          <input
-            className="checkbox__input"
-            name={this.props.name}
-            type="checkbox"
-            checked={this.props.checked}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              this.onCheckboxChange(e)
+        <input
+          className="checkbox__input"
+          name={this.props.name}
+          type="checkbox"
+          checked={this.props.checked}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            this.onCheckboxChange(e)
+          }
+        />
+        <div className="checkbox__box">
+          <div
+            className={
+              this.props.checked
+                ? 'checkbox__checker checkbox__checker_checked'
+                : 'checkbox__checker'
             }
-          />
-          <div className="checkbox__box">
-            <div
-              className={
-                this.props.checked
-                  ? 'checkbox__checker checkbox__checker_checked'
-                  : 'checkbox__checker'
-              }
-            ></div>
-          </div>
-          <span className="checkbox__span" title={this.props.title}>
-            {this.props.label}
-          </span>
-        </label>
+          ></div>
+        </div>
       </div>
     );
   }
@@ -57,6 +52,7 @@ class Checkbox
         valueType: 'text',
         value,
       });
+      return;
     }
     this.props.setAction({
       ...{ key: this.props.property, turner: e.target.checked },

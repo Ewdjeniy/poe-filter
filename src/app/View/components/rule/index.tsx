@@ -18,6 +18,7 @@ class Rule extends React.Component<RuleProps, RuleState> implements RuleI {
 
   handleRuleClick(): void {
     this.props.setAction(this.props.index);
+    this.props.onclick(this.props.index);
   }
 
   handleXClick(): void {

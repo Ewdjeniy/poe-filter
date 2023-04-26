@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import Checkbox from '../../components/Checkbox';
 import Property from '../Property';
 import Block from '../Block';
 
@@ -7,16 +8,6 @@ class PropertiesBox
   extends React.Component<PropertiesBoxProps, PropertiesBoxState>
   implements PropertiesBoxI
 {
-  constructor(props) {
-    super(props);
-    this.state = {
-      propertiesBoxTurner: 0,
-      propertiesBoxCheckboxClass: 'properties-box__checkbox',
-      propertiesBoxPropertiesClass:
-        'properties-box__properties properties-box__properties_hidden',
-    };
-  }
-
   render(): JSX.Element {
     const propertyList: JSX.Element[] = this.props.rules[this.props.label].map(
       (rule: object, i: number) => {
@@ -44,43 +35,31 @@ class PropertiesBox
 
     return (
       <article className="properties-box">
-        <div
-          className={this.state.propertiesBoxCheckboxClass}
-          onClick={this.onCheckboxChange.bind(this)}
-        >
-          <div className="properties-box__checker"></div>
-        </div>
-        <div className="properties-box__box">
-          <span
-            className="properties-box__span"
-            onClick={this.onCheckboxChange.bind(this)}
-          >
+        <label className="properties-box__label">
+          <Checkbox
+            name={`${this.props.label}_property_box_checkbox`}
+            checked={this.props.active}
+            setAction={this.handleChange.bind(this)}
+          />
+          <span className="properties-box__span">
             {this.props.translate(this.props.label)}
           </span>
-          <div className={this.state.propertiesBoxPropertiesClass}>
-            {this.props.label === 'Blocks' ? block() : propertyList}
-          </div>
+        </label>
+        <div
+          className={
+            this.props.active
+              ? 'properties-box__box properties-box__box_active'
+              : 'properties-box__box'
+          }
+        >
+          {this.props.label === 'Blocks' ? block() : propertyList}
         </div>
       </article>
     );
   }
 
-  onCheckboxChange() {
-    if (this.state.propertiesBoxTurner) {
-      this.setState({
-        propertiesBoxTurner: 0,
-        propertiesBoxCheckboxClass: 'properties-box__checkbox',
-        propertiesBoxPropertiesClass:
-          'properties-box__properties properties-box__properties_hidden',
-      });
-    } else {
-      this.setState({
-        propertiesBoxTurner: 1,
-        propertiesBoxCheckboxClass:
-          'properties-box__checkbox properties-box__checkbox_checked',
-        propertiesBoxPropertiesClass: 'properties-box__properties',
-      });
-    }
+  handleChange(): void {
+    this.props.onclick(this.props.index);
   }
 }
 

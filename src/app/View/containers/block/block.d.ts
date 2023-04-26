@@ -2,6 +2,7 @@ interface BlockProps {
   filter: defaultInitialState;
   blocks: string[];
   setBlockAction(options: object): void;
+  setContinueAction(options: object): void;
   translate(text: string): string;
 }
 

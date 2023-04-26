@@ -29,6 +29,9 @@ class InptColor
           setAction={this.props.setAction}
           min={this.props.min}
           max={this.props.max}
+          checked={this.props.checked}
+          defaultVal={this.props.defaultVal}
+          setTurner={this.props.setTurner}
         />
       </div>
     );
@@ -60,8 +63,18 @@ class InptColor
   }
 
   handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    const key = this.props.property ? this.props.property : '';
+    if (!this.props.checked) {
+      this.props.setTurner({
+        ...{
+          key,
+          turner: true,
+        },
+        ...this.props.defaultVal,
+      });
+    }
     this.props.setAction({
-      key: this.props.property,
+      key,
       rgb: this.hexToRGB(e.target.value),
     });
   }

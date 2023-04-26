@@ -1,41 +1,22 @@
 .properties-box {
-  display: grid;
   width: 100%;
   padding: 0.5em 0;
   cursor: pointer;
   user-select: none;
-  grid-template-columns: 3em 1fr;
 
-  &__checkbox {
-    display: flex;
-    width: 1em;
-    height: 1em;
-    border: 0.15em solid #634928;
-    justify-content: center;
-    align-items: center;
-    justify-self: center;
-  }
-
-  &__checker {
-    display: none;
-    width: 0.47em;
-    height: 0.47em;
-    background: #fff;
-  }
-
-  &__span {
-    display: block;
-    padding-bottom: 0.4em;
+  &__label {
+    display: grid;
+    width: 100%;
+    cursor: pointer;
     border-bottom: 1px solid #465260;
+    grid-template-columns: 2em 1fr;
   }
-}
 
-.properties-box__checkbox_checked {
-  .properties-box__checker {
-    display: block;
+  &__box {
+    display: none;
+
+    &_active {
+      display: block;
+    }
   }
-}
-
-.properties-box__properties_hidden {
-  display: none;
 }

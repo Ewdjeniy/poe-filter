@@ -4,9 +4,13 @@ interface MultipleProps {
   setAction(options: object): void;
   property: string;
   index?: number;
+  checked: boolean;
+  defaultVal: object;
+  setTurner(options: object): void;
 }
 
 interface MultipleState {
+  turner: number;
   inptValue: string;
   inputClass: string;
   triangleClass: string;

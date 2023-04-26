@@ -1,8 +1,7 @@
 import defaultInitialState from '../defaults/defaultInitialState';
 
-export const initialState: FilterInitialState = structuredClone
-  ? structuredClone(defaultInitialState)
-  : { ...defaultInitialState };
+export const initialState: FilterInitialState =
+  structuredClone(defaultInitialState);
 
 function setKey(obj, newKey) {
   const key = Object.keys(obj)[0];
@@ -41,8 +40,27 @@ function filterReducer(
   },
 ): FilterInitialState {
   switch (action.type) {
+    case 'SET_SWITCHER': {
+      const rulesCopy = structuredClone(state.rules);
+      const [key] = Object.keys(rulesCopy[state.ruleIndex]);
+      console.log(action.key);
+      rulesCopy[state.ruleIndex][key][action.key] = Boolean(action.value);
+      return {
+        ...state,
+        rules: rulesCopy,
+      };
+    }
+    case 'SET_CONTINUE': {
+      const rulesCopy = structuredClone(state.rules);
+      const [key] = Object.keys(rulesCopy[state.ruleIndex]);
+      rulesCopy[state.ruleIndex][key].Continue = action.turner;
+      return {
+        ...state,
+        rules: rulesCopy,
+      };
+    }
     case 'SET_COLOR': {
-      const rulesCopy = state.rules.slice(0);
+      const rulesCopy = structuredClone(state.rules);
       const [key] = Object.keys(rulesCopy[state.ruleIndex]);
       if (rulesCopy[state.ruleIndex][key][action.key]) {
         const index = action.index ? action.index : 0;
@@ -71,7 +89,7 @@ function filterReducer(
       };
     }
     case 'SET_MULTIPLE': {
-      const rulesCopy = state.rules.slice(0);
+      const rulesCopy = structuredClone(state.rules);
       const [key] = Object.keys(rulesCopy[state.ruleIndex]);
       const returnValueIndex = (valuesArr: string[], val: string) => {
         for (let i = 0; i < valuesArr.length; i += 1) {
@@ -98,7 +116,7 @@ function filterReducer(
       };
     }
     case 'SET_SOCKETS': {
-      const rulesCopy = state.rules.slice(0);
+      const rulesCopy = structuredClone(state.rules);
       const [key] = Object.keys(rulesCopy[state.ruleIndex]);
       if (rulesCopy[state.ruleIndex][key][action.key]) {
         rulesCopy[state.ruleIndex][key][action.key].sockets[action.letter] =
@@ -110,7 +128,7 @@ function filterReducer(
       };
     }
     case 'DELETE_BLOCK': {
-      const rulesCopy = state.rules.slice(0);
+      const rulesCopy = structuredClone(state.rules);
       rulesCopy.splice(action.index, 1);
       return {
         ...state,
@@ -119,10 +137,9 @@ function filterReducer(
       };
     }
     case 'ADD_BLOCK': {
-      const rulesCopy = state.rules.slice(0);
+      const rulesCopy = structuredClone(state.rules);
       const i: number = rulesCopy.length;
       rulesCopy[i] = {};
-      console.log(action.block);
       rulesCopy[i][action.block] = {};
       return {
         ...state,
@@ -137,7 +154,7 @@ function filterReducer(
       };
     }
     case 'SET_BLOCK': {
-      const rulesCopy = state.rules.slice(0);
+      const rulesCopy = structuredClone(state.rules);
 
       rulesCopy[state.ruleIndex] = setKey(
         rulesCopy[state.ruleIndex],
@@ -150,7 +167,7 @@ function filterReducer(
       };
     }
     case 'SET_PROPERTY': {
-      const rulesCopy = state.rules.slice(0);
+      const rulesCopy = structuredClone(state.rules);
       const [key] = Object.keys(rulesCopy[state.ruleIndex]);
       if (rulesCopy[state.ruleIndex][key][action.key]) {
         if (
@@ -176,7 +193,7 @@ function filterReducer(
       };
     }
     case 'SET_OPERATOR': {
-      const rulesCopy = state.rules.slice(0);
+      const rulesCopy = structuredClone(state.rules);
       const [key] = Object.keys(rulesCopy[state.ruleIndex]);
       if (rulesCopy[state.ruleIndex][key][action.key]) {
         rulesCopy[state.ruleIndex][key][action.key].operator = action.value;
@@ -187,7 +204,7 @@ function filterReducer(
       };
     }
     case 'SET_TURNER': {
-      const rulesCopy = state.rules.slice(0);
+      const rulesCopy = structuredClone(state.rules);
       const [key] = Object.keys(rulesCopy[state.ruleIndex]);
       if (action.turner) {
         const rule: RuleInterface = {};
@@ -196,7 +213,11 @@ function filterReducer(
         if (action.textValues) rule.textValues = action.textValues;
         if (action.colorValues) rule.colorValues = action.colorValues;
         if (action.sockets) rule.sockets = action.sockets;
-        rulesCopy[state.ruleIndex][key][action.key] = rule;
+        if (!action.operator && !action.numValues && !action.textValues && !action.colorValues && !action.sockets) {
+          rulesCopy[state.ruleIndex][key][action.key] = action.turner;
+        } else {
+          rulesCopy[state.ruleIndex][key][action.key] = rule;
+        }
       } else {
         delete rulesCopy[state.ruleIndex][key][action.key];
       }

@@ -4,6 +4,9 @@ interface SelectProps {
   setAction(options: object): void;
   property?: string;
   index?: number;
+  checked?: boolean;
+  defaultVal?: object;
+  setTurner?: (options?: object) => void;
 }
 
 interface SelectState {

@@ -26,22 +26,27 @@ class InptNumber
   }
 
   handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    if (this.props.letter) {
-      this.props.setAction({
-        key: this.props.property,
-        value: e.target.value,
-        letter: this.props.letter,
-      });
-    } else {
-      const index: number = this.props.index ? this.props.index : 0;
-      this.props.setAction({
-        key: this.props.property,
-        index,
-        valueType: 'num',
-        value: e.target.value,
-        alpha: e.target.value,
+    const key = this.props.property ? this.props.property : '';
+    const letter = this.props.letter ? this.props.letter : '';
+    const index: number = this.props.index ? this.props.index : 0;
+
+    if (!this.props.checked) {
+      this.props.setTurner({
+        ...{
+          key,
+          turner: true,
+        },
+        ...this.props.defaultVal,
       });
     }
+    this.props.setAction({
+      key: this.props.property,
+      index,
+      valueType: 'num',
+      value: e.target.value,
+      letter,
+      alpha: e.target.value,
+    });
   }
 }
 

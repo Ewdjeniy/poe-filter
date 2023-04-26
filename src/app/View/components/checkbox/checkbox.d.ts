@@ -1,11 +1,9 @@
 interface CheckboxProps {
   name: string;
   checked?: boolean;
-  setAction(options: object): void;
-  property: string;
+  setAction?: (options?: object) => void;
+  property?: string;
   defaultVal?: object;
-  label?: string;
-  title?: string;
   index?: number;
   value?: string;
 }

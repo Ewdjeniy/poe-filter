@@ -12,7 +12,7 @@ class Rules extends React.Component<RulesProps, RulesState> implements RulesI {
       Object.values(rule).forEach((ruleProperties) => {
         Object.keys(ruleProperties).forEach((property) => {
           const ruleElements = ruleProperties[property];
-          content += ` ${this.props.translate(property)} - `;
+          content += property !== 'Continue' ? ` ${this.props.translate(property)} - ` : '';
 
           Object.keys(ruleElements).forEach((ruleEl) => {
             switch (ruleEl) {
@@ -69,6 +69,7 @@ class Rules extends React.Component<RulesProps, RulesState> implements RulesI {
           setAction={this.props.setIndexAction}
           deleteAction={this.props.deleteBlockAction}
           content={content}
+          onclick={this.props.onclick}
         />
       );
     });

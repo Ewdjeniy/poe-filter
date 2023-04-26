@@ -6,6 +6,9 @@ interface InptColorProps {
   setAction(options: object): void;
   min?: number;
   max?: number;
+  checked?: boolean;
+  defaultVal: object;
+  setTurner(options: object): void;
 }
 
 interface InptColorState {

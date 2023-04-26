@@ -1,3 +1,22 @@
+export function setSwitcher(property: ActionProperty): object {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_SWITCHER',
+      key: property.key,
+      value: property.value
+    });
+  };
+}
+
+export function setContinue(property: ActionProperty): object {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_CONTINUE',
+      turner: property.turner
+    });
+  };
+}
+
 export function clearFilter(): object {
   return (dispatch) => {
     dispatch({

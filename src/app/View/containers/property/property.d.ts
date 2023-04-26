@@ -5,6 +5,7 @@ interface PropertyProps {
   setMultipleAction(options: object): void;
   setSocketsAction(options: object): void;
   setColorAction(options: object): void;
+  setSwitcherAction(options: object): void;
   filter: defaultInitialState;
   property: string;
   min?: number;

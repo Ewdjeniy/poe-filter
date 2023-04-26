@@ -16,9 +16,9 @@ class Language
         key={`lang_${i}`}
         instance="Flag"
         name="Language"
-        /* eslint-disable */
+        /* eslint-disable import/no-dynamic-require, global-require*/
         imgSrc={require(`./images/${lang}.png`)}
-        /* eslint-enable */
+        /* eslint-enable import/no-dynamic-require, global-require*/
         imgAlt={lang}
         value={lang}
         checked={this.props.language === lang}

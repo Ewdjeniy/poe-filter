@@ -1,5 +1,6 @@
 interface CodeProps {
   rules: object[];
+  checkOnQuotes(word: string): string;
 }
 
 interface CodeState {
@@ -9,5 +10,4 @@ interface CodeState {
 interface CodeI {
   render(): JSX.Element;
   returnFilterCodeOutOfRules(rules: object[]): JSX.Element[];
-  checkOnNoQuotes(word: string): boolean;
 }

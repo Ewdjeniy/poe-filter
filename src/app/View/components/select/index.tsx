@@ -76,20 +76,24 @@ class Select
   }
 
   handlePointerDown(value: string): boolean {
-    if (this.props.property) {
-      const index = this.props.index ? this.props.index : 0;
-      this.props.setAction({
-        key: this.props.property,
-        index,
-        valueType: 'text',
-        value,
-      });
-    } else {
-      this.props.setAction({
-        key: this.props.property,
-        value,
+    const index = this.props.index ? this.props.index : 0;
+    const key = this.props.property ? this.props.property : '';
+
+    if (this.props.setTurner && !this.props.checked) {
+      this.props.setTurner({
+        ...{
+          key,
+          turner: true,
+        },
+        ...this.props.defaultVal,
       });
     }
+    this.props.setAction({
+      key,
+      index,
+      valueType: 'text',
+      value,
+    });
     this.setState({
       inptValue: '',
     });

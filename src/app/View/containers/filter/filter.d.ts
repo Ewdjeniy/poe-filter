@@ -3,17 +3,18 @@ interface FilterProps {
   translate(text: string): string;
   translateOptions(options: string[]): object;
   clearFilterAction(): void;
-  state: object[];
+  filter: defaultInitialState;
 }
 
 interface FilterState {
   active: string;
+  propertiesState: number[];
 }
 
 interface FilterI {
-  instance: object;
+  renderInstance(instance: string): JSX.Element;
   handleClearClick(): void;
-  checkOnNoQuotes(word: string): boolean;
+  checkOnQuotes(word: string): string;
   returnFilterCodeOutOfRules(rules: object[]): string;
   handleCopyClick(): void;
   setMenuContent(text: string): void;

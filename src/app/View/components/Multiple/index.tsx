@@ -10,6 +10,7 @@ class Multiple
     super(props);
 
     this.state = {
+      turner: 0,
       inptValue: '',
       inputClass: 'multiple__input multiple__input_blur',
       triangleClass: 'multiple__triangle multiple__triangle_top',
@@ -74,7 +75,8 @@ class Multiple
           />
           <div
             className="multiple__div"
-            onClick={() => this.inpt.current.focus()}
+            onPointerDown={this.handleTrianglePointerDown.bind(this)}
+            onPointerUp={this.handleTrianglePointerUp.bind(this)}
           >
             <div className={this.state.triangleClass}></div>
           </div>
@@ -84,8 +86,23 @@ class Multiple
     );
   }
 
+  handleTrianglePointerDown(): void {
+    if (this.state.turner === 0) {
+      this.handleTrianglePointerUp = () => {
+        this.inpt.current.focus();
+      };
+    } else {
+      this.handleTrianglePointerUp = () => false;
+    }
+    this.handleTrianglePointerUp();
+  }
+
+  handleTrianglePointerUp(): void {}
+
   handleBlur(): void {
     this.setState({
+      turner: 0,
+      inptValue: '',
       inputClass: 'multiple__input multiple__input_blur',
       triangleClass: 'multiple__triangle multiple__triangle_top',
       spinnerClass: 'multiple__ul multiple__ul_off',
@@ -94,6 +111,7 @@ class Multiple
 
   handleFocus(): void {
     this.setState({
+      turner: 1,
       inputClass: 'multiple__input multiple__input_focus',
       triangleClass: 'multiple__triangle multiple__triangle_bottom',
       spinnerClass: 'multiple__ul multiple__ul_on',
@@ -101,24 +119,34 @@ class Multiple
   }
 
   handlePointerDown(value: string): void {
+    const key = this.props.property ? this.props.property : '';
+    const index: number = this.props.index ? this.props.index : 0;
+
     this.handleBlur = () => false;
-    if (this.props.property) {
-      const index = this.props.index ? this.props.index : 0;
-      this.props.setAction({
-        key: this.props.property,
-        index,
-        valueType: 'text',
-        value,
+
+    if (!this.props.checked) {
+      this.props.setTurner({
+        ...{
+          key,
+          turner: true,
+        },
+        ...this.props.defaultVal,
       });
-    } else {
-      this.props.setAction({ key: this.props.property, value });
     }
+    this.props.setAction({
+      key,
+      index,
+      valueType: 'text',
+      value,
+    });
   }
 
   handlePointerUp(): void {
     this.inpt.current.focus();
     this.handleBlur = () => {
       this.setState({
+        turner: 0,
+        inptValue: '',
         inputClass: 'multiple__input multiple__input_blur',
         triangleClass: 'multiple__triangle multiple__triangle_top',
         spinnerClass: 'multiple__ul multiple__ul_off',

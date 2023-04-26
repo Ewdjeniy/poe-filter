@@ -1,5 +1,10 @@
 .block {
   display: grid;
   padding: 0.4em 0;
-  grid-template-columns: 7em 7em 7em;
+  grid-template-columns: 7em 7em 7em 7em;
+  
+  &__checkbox-label {
+    display: flex;
+    cursor: pointer;
+  }
 }

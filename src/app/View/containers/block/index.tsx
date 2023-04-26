@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import Radio from '../../components/Radio';
-import { setBlock } from '../../actions/filterActions';
+import Checkbox from '../../components/Checkbox';
+import { setBlock, setContinue } from '../../actions/filterActions';
 
 class Block extends React.Component<BlockProps, BlockState> implements BlockI {
   render(): JSX.Element {
@@ -15,7 +16,7 @@ class Block extends React.Component<BlockProps, BlockState> implements BlockI {
           key={`block_${i}`}
           instance="Radio"
           label={this.props.translate(block)}
-          name="Block"
+          name={`block_${i}`}
           value={block}
           checked={value === block}
           setAction={this.props.setBlockAction}
@@ -23,7 +24,21 @@ class Block extends React.Component<BlockProps, BlockState> implements BlockI {
       ),
     );
 
-    return <article className="block">{blockList}</article>;
+    return (
+      <article className="block">
+        {blockList}
+        <label className="block__checkbox-label">
+          <Checkbox
+            checked={this.props.filter.rules[this.props.filter.ruleIndex][value].Continue}
+            name="continue"
+            setAction={this.props.setContinueAction}
+          />
+          <span className="block__span">
+            {this.props.translate('Continue')}
+          </span>
+        </label>
+      </article>
+    );
   }
 }
 
@@ -34,6 +49,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setBlockAction: (block) => dispatch(setBlock(block)),
+  setContinueAction: (property) => dispatch(setContinue(property)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Block);

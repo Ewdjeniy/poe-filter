@@ -7,11 +7,12 @@ class Radio extends React.Component<RadioProps, RadioState> implements RadioI {
 
   renderRadio(instance: string): JSX.Element {
     switch (instance) {
-      case 'Radio': {
+      case 'Flag': {
         return (
           <label className="radio__label">
+            <img src={this.props.imgSrc} alt={this.props.imgAlt} />
             <input
-              className="radio__input"
+              className="radio__input radio__input_hidden"
               name={this.props.name}
               type="radio"
               value={this.props.value}

@@ -9,6 +9,9 @@ interface InptNumberProps {
   placeholder?: string;
   letter?: string;
   index?: number;
+  checked: boolean;
+  defaultVal: object;
+  setTurner(options: object): void;
 }
 
 interface InptNumberState {
