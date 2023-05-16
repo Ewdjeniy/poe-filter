@@ -348,6 +348,38 @@ class Property
           </>
         );
       }
+      case 'SelNum': {
+        return (
+          <>
+            <Select
+              placeholder={this.returnRule().textValues[0]}
+              options={this.props.translateOptions(
+                this.props.content[this.props.options],
+              )}
+              property={this.props.property}
+              setAction={this.props.setPropertyAction}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
+            />
+            <InptNumber
+              name={`${this.props.property}_num`}
+              value={
+                this.returnRule().numValues ? this.returnRule().numValues[0] : 4
+              }
+              placeholder="vol"
+              property={this.props.property}
+              setAction={this.props.setPropertyAction}
+              index={0}
+              min={0}
+              max={300}
+              checked={this.checkIfRuleOn()}
+              defaultVal={this.props.defaultVal}
+              setTurner={this.props.setTurnerAction}
+            />
+          </>
+        );
+      }
       case 'NumNum': {
         return (
           <>
@@ -464,29 +496,38 @@ class Property
   }
 
   checkIfRuleOn(): boolean {
-    const rules =
+    if (this.props.filter.rules[this.props.filter.ruleIndex] && this.props.filter.rules[this.props.filter.ruleIndex][
+        Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]
+      ]) {
+      const rules =
       this.props.filter.rules[this.props.filter.ruleIndex][
         Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]
       ];
 
-    const keys = Object.keys(rules);
+      const keys = Object.keys(rules);
 
-    for (let i = 0; i < keys.length; i += 1) {
-      if (keys[i] === this.props.property) return true;
+      for (let i = 0; i < keys.length; i += 1) {
+        if (keys[i] === this.props.property) return true;
+      }
     }
-
     return false;
   }
 
   returnRule(): RuleInterface {
-    const rule: RuleInterface =
+    
+    if (this.props.filter.rules[this.props.filter.ruleIndex] && this.props.filter.rules[this.props.filter.ruleIndex][
+        Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]
+      ]) {
+      const rule: RuleInterface =
       this.props.filter.rules[this.props.filter.ruleIndex][
         Object.keys(this.props.filter.rules[this.props.filter.ruleIndex])[0]
       ][this.props.property];
-    if (rule) {
-      return rule;
+      if (rule) {
+        return rule;
+      }
+      return this.props.defaultVal; 
     }
-    return this.props.defaultVal;
+    
   }
 }
 

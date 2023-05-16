@@ -3,10 +3,6 @@ import * as React from 'react';
 class Menu extends React.Component<MenuProps, MenuState> implements MenuI {
   constructor(props) {
     super(props);
-    this.state = {
-      liClass: 'li',
-      activeLiId: 1,
-    };
   }
 
   render(): JSX.Element {
@@ -14,9 +10,9 @@ class Menu extends React.Component<MenuProps, MenuState> implements MenuI {
       <li
         key={`li_${i}`}
         className={
-          this.state.activeLiId === i ? 'menu__li menu__li_active' : 'menu__li'
+          this.props.activeLiId === i ? 'menu__li menu__li_active' : 'menu__li'
         }
-        onClick={() => this.handleLiClick(i, text)}
+        onClick={() => this.handleLiClick(text, i)}
       >
         {this.props.translate(text)}
       </li>
@@ -24,11 +20,8 @@ class Menu extends React.Component<MenuProps, MenuState> implements MenuI {
     return <menu className="menu">{liList}</menu>;
   }
 
-  handleLiClick(i: number, text: string): void {
-    this.props.onclick(text);
-    this.setState({
-      activeLiId: i,
-    });
+  handleLiClick(text: string, i: number,): void {
+    this.props.onclick(text, i);
   }
 }
 

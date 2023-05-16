@@ -1,5 +1,6 @@
 import * as React from 'react';
-//import { connect } from 'react-redux';
+import { connect } from 'react-redux';
+import { setRules } from '../../actions/filterActions';
 import Button from '../../components/Button';
 
 class Parser
@@ -39,15 +40,27 @@ class Parser
     return false;
   }
 
-  joinArrElsOnWord(wordsArr: string[], word: string): string[] {
+  joinArrElsOnQuotes(wordsArr: string[]): string[] {
     let deleted: string;
-    for (let i = 1; i < wordsArr.length; i += 1) {
-      if (wordsArr[i] === word) {
-        deleted = wordsArr.splice(i, 2).join(' ');
-        wordsArr.splice(i, 0, deleted);
+    const resultArr: string[] = [];
+    for (let i = 0; i < wordsArr.length; i += 1) {
+      if (wordsArr[i][0] !== '"' && wordsArr[i][wordsArr[i].length - 1] !== '"') {
+        resultArr.push(wordsArr[i]); 
+      } else if (wordsArr[i][0] === '"' && wordsArr[i][wordsArr[i].length - 1] !== '"') {
+        resultArr.push(wordsArr[i].replace(/"/g, ''));
+        for (let j = i + 1; j < wordsArr.length; j += 1) {
+          if (wordsArr[j].indexOf('"') !== -1) {
+            resultArr[resultArr.length - 1] += ` ${wordsArr[j].replace(/"/g, '')}`;
+            i = j;
+            break;
+          }
+          resultArr[resultArr.length - 1] += ` ${wordsArr[j]}`;
+        }
+      } else if (wordsArr[i][0] === '"' && wordsArr[i][wordsArr[i].length - 1] === '"') {
+        resultArr.push(wordsArr[i].replace(/"/g, ''));        
       }
     }
-    return wordsArr;
+    return resultArr;
   }
 
   checkIfColor(text: string): boolean {
@@ -96,80 +109,286 @@ class Parser
     return result;
   }
 
+  isOperator(str: string): any {
+    if (
+      str === '=' ||
+      str === '!' ||
+      str === '<=' ||
+      str === '>=' ||
+      str === '<' ||
+      str === '>' ||
+      str === '=='
+    ) {
+      return str;
+    }
+    return false;
+  }
+
+  parseProperty(str: string): {propertyName: string, property: any} {
+    
+    let wordsArr = str.split(' ');
+    wordsArr = this.joinArrElsOnQuotes(wordsArr);
+    const returnParsed = (property: any) => ({
+      propertyName: wordsArr[0],
+      property
+    });
+    let property: any = {};
+    const defaultOperator = '>=';
+    
+    switch (wordsArr[0]) {
+      case 'SetBackgroundColor': {
+        const colorValues: number[] = [];
+        for (let i = 1; i < wordsArr.length; i += 1) {
+          colorValues.push(+wordsArr[i])
+        } 
+        property.colorValues = [colorValues];
+        return returnParsed(property);
+      }
+      case 'SetBorderColor': {
+        const colorValues: number[] = [];
+        for (let i = 1; i < wordsArr.length; i += 1) {
+          colorValues.push(+wordsArr[i])
+        } 
+        property.colorValues = [colorValues];
+        return returnParsed(property);
+      }
+      case 'SetTextColor': {
+        const colorValues: number[] = [];
+        for (let i = 1; i < wordsArr.length; i += 1) {
+          colorValues.push(+wordsArr[i])
+        } 
+        property.colorValues = [colorValues];
+        return returnParsed(property);
+      }
+      case 'PlayAlertSound': {
+        if (wordsArr[1]) {
+          property.textValues = [wordsArr[1]];
+        }
+        if (wordsArr[2]) {
+          property.numValues = [wordsArr[2]];
+        }  
+        return returnParsed(property);
+      }
+      case 'PlayAlertSoundPositional': {
+        if (wordsArr[1]) {
+          property.textValues = [wordsArr[1]];
+        }
+        if (wordsArr[2]) {
+          property.numValues = [wordsArr[2]];
+        }  
+        return returnParsed(property);
+      }
+      case 'SocketGroup': {
+        for (let i = 1; i < wordsArr.length; i += 1) {
+          if (this.isOperator(wordsArr[i])) {
+            property.operator = wordsArr[i];
+          } else {
+            const sockets = this.extractColors(wordsArr[i]);
+            property = {
+              ...property,
+              numValues: sockets.numValues,
+              sockets: sockets.sockets,
+            }
+          }
+        }
+        property.operator = property.operator ? property.operator : '>=';
+        if (!property.numValues[0] && property.sockets) {
+          let socketsAmount = 0;
+          Object.keys(property.sockets).forEach((colorName) => {
+            socketsAmount += property.sockets[colorName],
+            property.numValues = [socketsAmount];
+          });
+        }
+        return returnParsed(property);
+      }
+      case 'Sockets': {
+        for (let i = 1; i < wordsArr.length; i += 1) {
+          if (this.isOperator(wordsArr[i])) {
+            property.operator = wordsArr[i];
+          } else {
+            const sockets = this.extractColors(wordsArr[i]);
+            property = {
+              ...property,
+              numValues: sockets.numValues,
+              sockets: sockets.sockets,
+            }
+          }
+        }
+        property.operator = property.operator ? property.operator : '>=';
+        if (!property.numValues[0] && property.sockets) {
+          let socketsAmount = 0;
+          Object.keys(property.sockets).forEach((colorName) => {
+            socketsAmount += property.sockets[colorName],
+            property.numValues = [socketsAmount];
+          });
+        }
+        return returnParsed(property);
+      }
+      case 'HasExplicitMod': {
+        property.operator = defaultOperator;
+        for (let i = 1; i < wordsArr.length; i += 1) {
+          if (this.isOperator(wordsArr[i])) {
+            property.operator = wordsArr[i];
+          } else if (this.isNum(wordsArr[i])) {
+            property.numValues = property.numValues ? property.numValues : [];
+            property.numValues.push(wordsArr[i]);
+          } else {
+            property.textValues = property.textValues ? property.textValues : [];
+            property.textValues.push(wordsArr[i]);
+          }
+        }
+        property.numValues = property.numValues ? property.numValues : [property.textValues.length];
+        return returnParsed(property);
+      }
+      case 'Rarity': {
+        property.operator = defaultOperator;
+      }
+      case 'BaseArmour': {
+        property.operator = defaultOperator;
+      }
+      case 'BaseDefencePercentile': {
+        property.operator = defaultOperator;
+      }
+      case 'BaseEnergyShield': {
+        property.operator = defaultOperator;
+      }
+      case 'BaseEvasion': {
+        property.operator = defaultOperator;
+      }
+      case 'BaseWard': {
+        property.operator = defaultOperator;
+      }
+      case 'LinkedSockets': {
+        property.operator = defaultOperator;
+      }
+      case 'CorruptedMods': {
+        property.operator = defaultOperator;
+      }
+      case 'EnchantmentPassiveNum': {
+        property.operator = defaultOperator;
+      }
+      case 'HasEaterOfWorldsImplicit': {
+        property.operator = defaultOperator;
+      }
+        
+      case 'Width': {
+        property.operator = '=';
+      }
+        
+      case 'Height': {
+        property.operator = '=';
+      }
+        
+      case 'Quality': {
+        property.operator = defaultOperator;
+      }
+        
+      case 'StackSize': {
+        property.operator = defaultOperator;
+      }
+        
+      case 'AreaLevel': {
+        property.operator = defaultOperator;
+      }
+        
+      case 'DropLevel': {
+        property.operator = defaultOperator;
+      }
+        
+      case 'GemLevel': {
+        property.operator = defaultOperator;
+      }
+        
+      case 'ItemLevel': {
+        property.operator = defaultOperator;
+      }
+        
+      case 'MapTier': {
+        property.operator = defaultOperator;
+      }
+        
+      case 'HasSearingExarchImplicit': {
+        property.operator = defaultOperator;
+      }
+      
+      default: {
+        for (let i = 1; i < wordsArr.length; i += 1) {
+          if (this.isOperator(wordsArr[i])) {
+            property.operator = wordsArr[i];
+          } else if (this.isNum(wordsArr[i])) {
+            property.numValues = property.numValues ? property.numValues : [];
+            property.numValues.push(wordsArr[i]);
+          } else {
+            property.textValues = property.textValues ? property.textValues : [];
+            property.textValues.push(wordsArr[i]);
+          }
+        }
+        return returnParsed(property);
+      }
+    }
+    
+  }
+
   parse(): void {
+    
     const rules: object[] = [];
     const textToCode: string[] = this.state.textArValue.split('\n');
+    let blockName = '';
 
     for (let i = 0; i < textToCode.length; i += 1) {
-      let blockName = '';
       textToCode[i] = textToCode[i].trim();
-      if (
-        textToCode[i] === 'Show' ||
-        textToCode[i] === 'Hide' ||
-        textToCode[i] === 'Minimal'
-      ) {
+      if (textToCode[i].indexOf('#') === 0) {
+        continue;
+      }
+      if (textToCode[i] === 'Show' || textToCode[i] === 'Hide' || textToCode[i] === 'Minimal') {
         rules.push({});
         rules[rules.length - 1][textToCode[i]] = {};
         blockName = textToCode[i];
-      } else {
-        let codeStringArr = textToCode[i].split(' ');
-        codeStringArr = this.joinArrElsOnWord(codeStringArr, '"of');
-        let key = '';
-        codeStringArr.forEach((str, j) => {
-          if (j === 0) {
-            rules[rules.length - 1][blockName][str] = {};
-            key = str;
-          } else if (
-            str === '=' ||
-            str === '!' ||
-            str === '<=' ||
-            str === '>=' ||
-            str === '<' ||
-            str === '>' ||
-            str === '=='
-          ) {
-            rules[rules.length - 1][blockName][key].operator = str;
-          } else if (this.checkIfColor(str)) {
-            if (this.extractColors(str).numValues) {
-              rules[rules.length - 1][blockName][key].numValues = rules[
-                rules.length - 1
-              ][blockName][key].numValues
-                ? rules[rules.length - 1][blockName][key].numValues
-                : [];
-              rules[rules.length - 1][blockName][key].numValues = rules[
-                rules.length - 1
-              ][blockName][key].numValues.concat(
-                this.extractColors(str).numValues,
-              );
-            }
-            rules[rules.length - 1][blockName][key].sockets =
-              this.extractColors(str).sockets;
-          } else if (this.isNum(str)) {
-            rules[rules.length - 1][blockName][key].numValues = rules[
-              rules.length - 1
-            ][blockName][key].numValues
-              ? rules[rules.length - 1][blockName][key].numValues
-              : [];
-            rules[rules.length - 1][blockName][key].numValues.push(str);
+        continue;
+      }
+      switch (textToCode[i]) {
+        case 'Continue': {
+          rules[rules.length - 1][blockName].Continue = true;
+          break;
+        }
+        case 'EnableDropSound': {
+          rules[rules.length - 1][blockName].DropSound = true;
+          break;
+        }
+        case 'DisableDropSound': {
+          rules[rules.length - 1][blockName].DropSound = false;
+          break;
+        }
+        case 'EnableDropSoundIfAlertSound': {
+          rules[rules.length - 1][blockName].DropSoundIfAlertSound = true;
+          break;
+        }
+        case 'DisableDropSoundIfAlertSound': {
+          rules[rules.length - 1][blockName].DropSoundIfAlertSound = false;
+          break;
+        }
+        default: {
+          const codeString = this.parseProperty(textToCode[i]);
+          if (codeString && codeString.propertyName && codeString.property) {
+            rules[rules.length - 1][blockName][codeString.propertyName] = codeString.property;
           } else {
-            rules[rules.length - 1][blockName][key].textValues = rules[
-              rules.length - 1
-            ][blockName][key].textValues
-              ? rules[rules.length - 1][blockName][key].textValues
-              : [];
-            rules[rules.length - 1][blockName][key].textValues.push(str);
+            alert('Code not valid!');
           }
-        });
+        }     
       }
     }
-
-    console.log(textToCode);
-    console.log(rules);
+    this.setState({textArValue: '',});
+    this.props.setRulesAction(rules);
+    this.props.switchConstructor();
+    
   }
+  
 }
 
-//const mapStateToProps = (store) => ({});
-//
-//const mapDispatchToProps = (dispatch) => ({});
+const mapStateToProps = (store) => ({});
 
-export default Parser;
+const mapDispatchToProps = (dispatch) => ({
+  setRulesAction: (rules: any) => dispatch(setRules(rules)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Parser);

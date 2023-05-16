@@ -1,6 +1,8 @@
 interface ParserProps {
   name: string;
+  setRulesAction(rules: any): void;
   translate(text: string): string;
+  switchConstructor: any;
 }
 
 interface ParserState {
@@ -10,7 +12,7 @@ interface ParserState {
 interface ParserI {
   handleInput(e: React.ChangeEvent<HTMLTextAreaElement>): void;
   isNum(value): boolean;
-  joinArrElsOnWord(wordsArr: string[], word: string): string[];
+  joinArrElsOnQuotes(wordsArr: string[]): string[];
   checkIfColor(text: string): boolean;
   extractColors(text: string): { numValues: number[]; sockets: object };
   parse(): void;

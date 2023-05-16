@@ -1,14 +1,14 @@
 interface MenuProps {
-  onclick(menuValue: string): void;
+  onclick(menuValue: string, id: number): void;
   translate(text: string): string;
+  activeLiId: any;
 }
 
 interface MenuState {
-  liClass?: string;
-  activeLiId: number;
+
 }
 
 interface MenuI {
   render(): JSX.Element;
-  handleLiClick(i: number, text: string): void;
+  handleLiClick(text: string, i: number): void;
 }

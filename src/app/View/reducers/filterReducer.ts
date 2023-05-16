@@ -17,6 +17,7 @@ function filterReducer(
   action = {
     type: 'SET_COLOR',
     key: 'BaseType',
+    rules: [{Show: {Class: 'Amulet'}}],
     operator: '>=',
     numValues: [4],
     textValues: [''],
@@ -40,10 +41,15 @@ function filterReducer(
   },
 ): FilterInitialState {
   switch (action.type) {
+    case 'SET_RULES': {
+      return {
+        ...state,
+        rules: action.rules,
+      };
+    }
     case 'SET_SWITCHER': {
       const rulesCopy = structuredClone(state.rules);
       const [key] = Object.keys(rulesCopy[state.ruleIndex]);
-      console.log(action.key);
       rulesCopy[state.ruleIndex][key][action.key] = Boolean(action.value);
       return {
         ...state,
@@ -56,6 +62,7 @@ function filterReducer(
       rulesCopy[state.ruleIndex][key].Continue = action.turner;
       return {
         ...state,
+        ruleIndex: 0,
         rules: rulesCopy,
       };
     }

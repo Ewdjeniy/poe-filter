@@ -17,6 +17,7 @@ class Filter
     const propertiesState: number[] = this.returnPropertiesState(0);
     this.state = {
       active: 'Constructor',
+      activeId: 1,
       propertiesState,
     };
   }
@@ -27,6 +28,7 @@ class Filter
         <Menu
           onclick={this.setMenuContent.bind(this)}
           translate={this.props.translate}
+          activeLiId={this.state.activeId}
         />
         {this.renderInstance(this.state.active)}
         <Code
@@ -35,6 +37,10 @@ class Filter
         />
       </section>
     );
+  }
+  
+  switchConstructor() {
+    this.setMenuContent('Constructor', 1);
   }
 
   renderInstance(instance: string): JSX.Element {
@@ -81,9 +87,8 @@ class Filter
       }
 
       case 'Parser': {
-        return <Parser translate={this.props.translate} name="parser" />;
+        return <Parser translate={this.props.translate} switchConstructor={this.switchConstructor.bind(this)} name="parser" />;
       }
-
       default: {
         return <div>No instance</div>;
       }
@@ -192,8 +197,11 @@ class Filter
     );
   }
 
-  setMenuContent(text: string): void {
-    this.setState({ active: text });
+  setMenuContent(text: string, id: number): void {
+    this.setState({ 
+      active: text,
+      activeId: id
+    });
   }
 }
 

@@ -16,17 +16,17 @@ class Rules extends React.Component<RulesProps, RulesState> implements RulesI {
 
           Object.keys(ruleElements).forEach((ruleEl) => {
             switch (ruleEl) {
-              case 'numValues': {
-                ruleElements.numValues.forEach((val) => {
-                  content += ` ${val}`;
-                });
-                break;
-              }
               case 'textValues': {
                 ruleElements.textValues.forEach((val) => {
                   content += ` ${val},`;
                 });
                 content = content.slice(0, -1);
+                break;
+              }
+              case 'numValues': {
+                ruleElements.numValues.forEach((val) => {
+                  content += ` ${val}`;
+                });
                 break;
               }
               case 'colorValues': {

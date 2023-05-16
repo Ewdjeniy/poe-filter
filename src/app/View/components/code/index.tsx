@@ -13,61 +13,93 @@ class Code extends React.Component<CodeProps, CodeState> implements CodeI {
     return rules.map((rule: object, i) => {
       const block = `${Object.keys(rule)[0]}`;
       let continueString: any = false;
+      const returnRule = (i: number, content: string) => (
+        <div key={`div_${i}`}>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          {content}
+        </div>
+      );
       const ruleList: JSX.Element[] = Object.keys(rule[block]).map(
         (ruleName: string, i: number) => {
           switch (ruleName) {
+            case 'MinimapIcon': {
+              let content = `${ruleName}`;
+              content += ` ${rule[block][ruleName].numValues[0]}`;
+              if (rule[block][ruleName].numValues[0] >= 0) {
+                rule[block][ruleName].textValues.forEach((value) => {
+                  content += ` ${this.props.checkOnQuotes(value)}`;
+                });
+              }
+              return returnRule(i, content);
+            }
             case 'DropSound': {
               if (rule[block].DropSound === false) {
                 let content = 'DisableDropSound';
-                return (
-                  <div key={`div_${i}`}>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    {content}
-                  </div>
-                );
+                return returnRule(i, content);
               } else if (rule[block].DropSound) {
                 let content = 'EnableDropSound';
-                return (
-                  <div key={`div_${i}`}>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    {content}
-                  </div>
-                );
+                return returnRule(i, content);
               }
             }
             case 'DropSoundIfAlertSound': {
               if (rule[block].DropSoundIfAlertSound === false) {
                 let content = 'DisableDropSoundIfAlertSound';
-                return (
-                  <div key={`div_${i}`}>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    {content}
-                  </div>
-                );
+                return returnRule(i, content);
               } else if (rule[block].DropSoundIfAlertSound) {
                 let content = 'EnableDropSoundIfAlertSound';
-                return (
-                  <div key={`div_${i}`}>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    {content}
-                  </div>
-                );
+                return returnRule(i, content);
               }
             }
             case 'Continue': {
               if (rule[block].Continue) {
-                continueString = () => (
-                  <div key={`div_${i}`}>
-                    &nbsp;&nbsp;&nbsp;
-                    Continue
-                  </div>
-                );
-                break;
+                continueString = () => {
+                  return returnRule(i, 'Continue');
+                };
               }
               break;
             }
+            case 'PlayAlertSound': {
+              let content = `${ruleName}`;
+              if (rule[block][ruleName].textValues && rule[block][ruleName].textValues[0] === 'None') {
+                content += ' None';
+                return returnRule(i, content);
+              }
+              if (rule[block][ruleName].textValues) {
+                rule[block][ruleName].textValues.forEach((value) => {
+                  content += ` ${this.props.checkOnQuotes(value)}`;
+                });
+              }
+              if (rule[block][ruleName].numValues) {
+                rule[block][ruleName].numValues.forEach((value) => {
+                  content += ` ${value}`;
+                });
+              }
+              return returnRule(i, content);
+            }
+            case 'PlayAlertSoundPositional': {
+              let content = `${ruleName}`;
+              if (rule[block][ruleName].textValues && rule[block][ruleName].textValues[0] === 'None') {
+                content += ' None';
+                return returnRule(i, content);
+              }
+              if (rule[block][ruleName].textValues) {
+                rule[block][ruleName].textValues.forEach((value) => {
+                  content += ` ${this.props.checkOnQuotes(value)}`;
+                });
+              }
+              if (rule[block][ruleName].numValues) {
+                rule[block][ruleName].numValues.forEach((value) => {
+                  content += ` ${value}`;
+                });
+              }
+              return returnRule(i, content);
+            }
             default: {
               let content = `${ruleName}`;
+              if (rule[block][ruleName].textValues && rule[block][ruleName].textValues[0] === 'None') {
+                content += ' None';
+                return returnRule(i, content);
+              }
               if (rule[block][ruleName].operator) {
                 content += ` ${rule[block][ruleName].operator}`;
               }
@@ -98,12 +130,7 @@ class Code extends React.Component<CodeProps, CodeState> implements CodeI {
                   }
                 });
               }
-              return (
-                <div key={`div_${i}`}>
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-                  {content}
-                </div>
-              );
+              return returnRule(i, content);
             }
           }
         }

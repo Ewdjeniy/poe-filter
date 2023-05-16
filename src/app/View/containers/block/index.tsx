@@ -6,9 +6,14 @@ import { setBlock, setContinue } from '../../actions/filterActions';
 
 class Block extends React.Component<BlockProps, BlockState> implements BlockI {
   render(): JSX.Element {
-    const value = Object.keys(
-      this.props.filter.rules[this.props.filter.ruleIndex],
-    )[0];
+    let value: string;
+    let continueVal: boolean;
+    if (this.props.filter.rules[this.props.filter.ruleIndex]) {
+      value = Object.keys(
+        this.props.filter.rules[this.props.filter.ruleIndex],
+      )[0];
+      continueVal = this.props.filter.rules[this.props.filter.ruleIndex][value].Continue ? this.props.filter.rules[this.props.filter.ruleIndex][value].Continue : false;
+    }
 
     const blockList: JSX.Element[] = this.props.blocks.map(
       (block: string, i: number) => (
@@ -29,7 +34,7 @@ class Block extends React.Component<BlockProps, BlockState> implements BlockI {
         {blockList}
         <label className="block__checkbox-label">
           <Checkbox
-            checked={this.props.filter.rules[this.props.filter.ruleIndex][value].Continue}
+            checked={continueVal}
             name="continue"
             setAction={this.props.setContinueAction}
           />

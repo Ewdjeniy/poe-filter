@@ -1,3 +1,12 @@
+export function setRules(rules: any): object {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_RULES',
+      rules,
+    });
+  };
+}
+
 export function setSwitcher(property: ActionProperty): object {
   return (dispatch) => {
     dispatch({
